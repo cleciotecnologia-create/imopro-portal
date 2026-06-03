@@ -1,0 +1,32 @@
+{
+  "version": 2,
+  "builds": [
+    {
+      "src": "*.html",
+      "use": "@vercel/static"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/",
+      "dest": "/index.html"
+    },
+    {
+      "src": "/portal",
+      "dest": "/ImoPro_Portal.html"
+    },
+    {
+      "src": "/diagnostico",
+      "dest": "/ImoPro_Firebase_Diagnostico.html"
+    },
+    {
+      "headers": {
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
+        "X-Content-Type-Options": "nosniff"
+      },
+      "src": "/(.*)",
+      "dest": "/$1"
+    }
+  ]
+}

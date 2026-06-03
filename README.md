@@ -1,37 +1,44 @@
 # 🏢 ImóPro — Portal Imobiliário Completo
 
-Portal imobiliário profissional desenvolvido em HTML/CSS/JS puro, sem dependências externas.
+Portal imobiliário profissional com Firebase Firestore integrado.
 
-## 🚀 Módulos incluídos
+## 🔗 Links
 
-### Vendas & CRM
-- **Dashboard** — métricas em tempo real: imóveis, leads, visitas, VGV
-- **Imóveis** — grid com filtros, cadastro e publicação
-- **Publicar Imóvel** — formulário completo com upload de fotos e geração de descrição por IA
-- **CRM Kanban** — funil visual (Novo → Contato → Visita → Proposta → Fechado)
-- **WhatsApp** — templates prontos e disparo para múltiplos contatos
-- **Regulação / Despachante** — fluxo de documentação passo a passo
-- **Marketing & Banners** — gerador de banner com templates e campanhas
+- **Portal Principal:** `/ImoPro_Portal.html`
+- **Diagnóstico Firebase:** `/ImoPro_Firebase_Diagnostico.html`
+- **Teste Firebase:** `/ImoPro_Firebase_Test.html`
 
-### Gestão de Locação
-- **Dashboard Locação** — contratos, repasses, inadimplência, split financeiro
-- **Contratos** — gestão completa com renovação, rescisão e cálculo de reajuste
-- **Cobranças** — emissão de boleto, PIX e envio automático
-- **Split & Repasses** — configuração de percentual por contrato com slider interativo
-- **DIMOB** — declaração imobiliária com exportação XML e alertas fiscais
-- **Imposto de Renda** — simulador de carnê-leão e DARF com tabela progressiva 2026
-- **Portal do Locatário** — área exclusiva com chat, chamados e documentos
-- **Leads Locação** — funil com análise de crédito automática
-- **Manutenção** — chamados com prioridade e acompanhamento
+## 🔥 Firebase
 
-## 🛠️ Como usar
+- **Projeto:** imopro-portal
+- **Banco:** Firestore (tempo real)
+- **Coleções:** imoveis, leads, contratos, cobr, leads_loc, manutencao
 
-Abra o arquivo `ImoPro_Portal.html` diretamente no navegador — sem instalação, sem servidor.
+## 🚀 Deploy
 
-## 📍 Localização
+Compatível com **Vercel**, **GitHub Pages** e **Netlify**.
 
-Paulo Afonso, Bahia, Brasil
+## 📦 Módulos
 
-## 📄 Licença
+### Vendas
+- Dashboard com métricas Firebase em tempo real
+- Cadastro e listagem de imóveis
+- CRM Kanban (Novo → Contato → Visita → Proposta → Fechado)
+- WhatsApp Marketing com templates
+- Regulação & Despachante Imobiliário
+- Gerador de Banners e Campanhas
 
-MIT
+### Locação
+- Dashboard de Locação
+- Contratos com CRUD Firebase
+- Cobranças (Boleto/PIX)
+- Split de Pagamentos com slider
+- DIMOB (declaração fiscal)
+- Simulador IR/DARF 2026
+- Portal do Locatário
+- Leads com análise de crédito
+- Chamados de Manutenção
+
+## 🛠️ Como usar localmente
+
+Abra `index.html` ou `ImoPro_Portal.html` em qualquer navegador moderno.
