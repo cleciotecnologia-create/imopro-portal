@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ImóPro — Diagnóstico Firebase</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/dist/tabler-icons.min.css">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:#0d1117;color:#e6edf3;font-size:13px;padding:20px}
+.wrap{max-width:900px;margin:0 auto}
+.header{background:linear-gradient(135deg,#1a3a5c,#0f4c75);border-radius:12px;padding:20px 24px;margin-bottom:20px;display:flex;align-items:center;justify-content:space-between}
+.header h1{font-size:18px;font-weight:700;display:flex;align-items:center;gap:8px}
+.header h1 span{color:#e8a020}
+.fb-badge{background:rgba(255,165,0,.2);color:#ffb347;border-radius:20px;padding:5px 14px;font-size:11px;font-weight:700;display:flex;align-items:center;gap:5px}
+.steps{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-bottom:20px}
+.step{background:#161b22;border:1px solid #30363d;border-radius:10px;padding:14px;text-align:center;transition:all .3s}
+.step.running{border-color:#f39c12;background:#1a1500}
+.step.ok{border-color:#2ecc71;background:#0d1f12}
+.step.err{border-color:#e17055;background:#1f0d0d}
+.step-icon{font-size:24px;margin-bottom:6px}
+.step-label{font-size:11px;font-weight:600;margin-bottom:3px}
+.step-status{font-size:10px;color:#8b949e}
+.step.ok .step-status{color:#2ecc71}
+.step.err .step-status{color:#e17055}
+.step.running .step-status{color:#f39c12}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px}
+.panel{background:#161b22;border:1px solid #30363d;border-radius:10px;padding:16px 18px}
+.pt{font-size:13px;font-weight:700;margin-bottom:12px;display:flex;align-items:center;justify-content:space-between;gap:6px;color:#e6edf3}
+.pt i{color:#e8a020}
+.log-box{background:#0d1117;border-radius:8px;padding:14px;font-family:monospace;font-size:11px;max-height:280px;overflow-y:auto;line-height:1.9;border:1px solid #21262d}
+.l-ok{color:#2ecc71}.l-err{color:#f85149}.l-warn{color:#f39c12}.l-info{color:#58a6ff}.l-mu{color:#8b949e}
+.btn{padding:8px 16px;border-radius:8px;border:none;cursor:pointer;font-size:12px;font-weight:700;display:inline-flex;align-items:center;gap:6px;transition:all .15s}
+.btn:hover{opacity:.85}.btn:disabled{opacity:.4;cursor:not-allowed}
+.btn-pr{background:#1a3a5c;color:#fff}.btn-gr{background:#2ecc71;color:#fff}
+.btn-ac{background:#e8a020;color:#fff}.btn-rd{background:#e17055;color:#fff}
+.btn-blue{background:#0984e3;color:#fff}
+.form-row{display:flex;flex-direction:column;gap:4px;margin-bottom:10px}
+.form-row label{font-size:10px;color:#8b949e;font-weight:700;text-transform:uppercase;letter-spacing:.5px}
+.form-row input,.form-row select{padding:8px 10px;border-radius:7px;border:1px solid #30363d;background:#0d1117;color:#e6edf3;font-size:12px;width:100%}
+.form-row input:focus,.form-row select:focus{outline:none;border-color:#e8a020}
+.tag{display:inline-flex;padding:2px 8px;border-radius:20px;font-size:10px;font-weight:700}
+.tg{background:#0d3320;color:#2ecc71;border:1px solid #1a5c3a}
+.to{background:#332300;color:#f39c12;border:1px solid #5c3f00}
+.tr{background:#330d0d;color:#e17055;border:1px solid #5c1a1a}
+.data-item{background:#0d1117;border:1px solid #21262d;border-radius:8px;padding:10px 12px;margin-bottom:6px;font-size:11px;display:flex;align-items:center;gap:10px;transition:border-color .2s}
+.data-item:hover{border-color:#e8a020}
+.data-id{font-size:9px;color:#8b949e;font-family:monospace}
+.del-btn{background:none;border:none;cursor:pointer;color:#e17055;font-size:14px;margin-left:auto;opacity:.6;transition:opacity .2s}
+.del-btn:hover{opacity:1}
+.alert{border-radius:8px;padding:10px 13px;font-size:11px;margin-bottom:10px;display:flex;align-items:center;gap:7px}
+.al-ok{background:#0d3320;border:1px solid #1a5c3a;color:#2ecc71}
+.al-err{background:#330d0d;border:1px solid #5c1a1a;color:#e17055}
+.al-warn{background:#332300;border:1px solid #5c3f00;color:#f39c12}
+.spinner{display:inline-block;width:13px;height:13px;border:2px solid rgba(255,255,255,.2);border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.rule-box{background:#332300;border:1px solid #5c3f00;border-radius:8px;padding:12px 14px;margin-bottom:10px;font-size:11px;line-height:1.8}
+.rule-box pre{background:#0d1117;border-radius:6px;padding:10px;font-size:10px;color:#58a6ff;overflow-x:auto;margin-top:8px}
+.counter-bar{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-bottom:14px}
+.counter-card{background:#161b22;border:1px solid #30363d;border-radius:8px;padding:12px;text-align:center}
+.counter-card .num{font-size:22px;font-weight:700;margin:4px 0}
+.counter-card .lbl{font-size:10px;color:#8b949e}
+.counter-card.ok .num{color:#2ecc71}
+.counter-card.warn .num{color:#f39c12}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<div class="header">
+  <h1><i class="ti ti-database"></i> Imó<span>Pro</span> — Diagnóstico Firebase</h1>
+  <div class="fb-badge"><i class="ti ti-flame"></i> imopro-portal</div>
+</div>
+
+<!-- STEPS -->
+<div class="steps">
+  <div class="step" id="s1"><div class="step-icon">🔧</div><div class="step-label">SDK Firebase</div><div class="step-status" id="s1-t">Aguardando...</div></div>
+  <div class="step" id="s2"><div class="step-icon">🔐</div><div class="step-label">Inicialização</div><div class="step-status" id="s2-t">Aguardando...</div></div>
+  <div class="step" id="s3"><div class="step-icon">🗄️</div><div class="step-label">Firestore</div><div class="step-status" id="s3-t">Aguardando...</div></div>
+  <div class="step" id="s4"><div class="step-icon">✍️</div><div class="step-label">Escrita</div><div class="step-status" id="s4-t">Aguardando...</div></div>
+  <div class="step" id="s5"><div class="step-icon">📖</div><div class="step-label">Leitura</div><div class="step-status" id="s5-t">Aguardando...</div></div>
+</div>
+
+<!-- CONTADORES -->
+<div class="counter-bar">
+  <div class="counter-card" id="cnt-imoveis"><div class="lbl">Imóveis</div><div class="num" id="n-imoveis">—</div></div>
+  <div class="counter-card" id="cnt-leads"><div class="lbl">Leads</div><div class="num" id="n-leads">—</div></div>
+  <div class="counter-card" id="cnt-contratos"><div class="lbl">Contratos</div><div class="num" id="n-contratos">—</div></div>
+  <div class="counter-card" id="cnt-cobr"><div class="lbl">Cobranças</div><div class="num" id="n-cobr">—</div></div>
+  <div class="counter-card" id="cnt-manut"><div class="lbl">Manutenção</div><div class="num" id="n-manut">—</div></div>
+</div>
+
+<div class="g2">
+  <!-- LOG -->
+  <div class="panel">
+    <div class="pt"><span><i class="ti ti-terminal"></i> Log de Diagnóstico</span>
+      <div style="display:flex;gap:6px">
+        <button class="btn btn-gr" id="btn-retestar" onclick="retestar()"><i class="ti ti-refresh"></i> Retestar</button>
+        <button class="btn btn-rd" onclick="document.getElementById('log').innerHTML=''"><i class="ti ti-trash"></i> Limpar</button>
+      </div>
+    </div>
+    <div class="log-box" id="log"><span class="l-mu">// Iniciando diagnóstico...</span></div>
+  </div>
+
+  <!-- REGRAS -->
+  <div class="panel">
+    <div class="pt"><span><i class="ti ti-shield-check"></i> Regras Firestore</span></div>
+    <div id="rules-box">
+      <div class="rule-box">
+        <div style="font-weight:700;color:#f39c12;margin-bottom:5px"><i class="ti ti-alert-triangle"></i> Configure as regras no Firebase Console</div>
+        Se o banco retornar erro de permissão, acesse:<br>
+        <b>Firebase Console → Firestore → Rules</b><br>
+        e use estas regras para desenvolvimento:
+        <pre>rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /{document=**} {
+      allow read, write: if true;
+    }
+  }
+}</pre>
+        <div style="margin-top:8px;color:#8b949e">⚠️ Para produção, use autenticação!</div>
+      </div>
+      <div style="display:flex;gap:6px;flex-wrap:wrap">
+        <button class="btn btn-blue" onclick="window.open('https://console.firebase.google.com/project/imopro-portal/firestore/rules','_blank')">
+          <i class="ti ti-external-link"></i> Abrir Regras no Console
+        </button>
+        <button class="btn btn-ac" onclick="testarEscrita()"><i class="ti ti-pencil"></i> Testar Escrita</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- TESTE CRUD -->
+<div class="g2">
+  <div class="panel">
+    <div class="pt"><span><i class="ti ti-plus"></i> Inserir Dado de Teste</span></div>
+    <div id="alert-test"></div>
+    <div class="form-row"><label>Coleção</label>
+      <select id="t-col">
+        <option value="imoveis">imoveis</option>
+        <option value="leads">leads</option>
+        <option value="contratos">contratos</option>
+        <option value="cobr">cobr</option>
+        <option value="leads_loc">leads_loc</option>
+        <option value="manutencao">manutencao</option>
+      </select>
+    </div>
+    <div class="form-row"><label>Título / Nome</label><input id="t-nome" placeholder="Ex: Casa 3 quartos" value="Teste Firebase"></div>
+    <div class="form-row"><label>Valor (R$)</label><input id="t-val" type="number" value="450000"></div>
+    <div style="display:flex;gap:7px;margin-top:8px">
+      <button class="btn btn-gr" id="btn-insert" onclick="inserirTeste()"><i class="ti ti-device-floppy"></i> Salvar no Firestore</button>
+      <button class="btn btn-ac" onclick="lerColecao()"><i class="ti ti-refresh"></i> Recarregar dados</button>
+    </div>
+  </div>
+
+  <div class="panel">
+    <div class="pt"><span><i class="ti ti-list"></i> Dados no Firestore</span>
+      <select id="sel-col" onchange="lerColecao()" style="background:#0d1117;border:1px solid #30363d;border-radius:6px;padding:4px 8px;color:#e6edf3;font-size:11px">
+        <option value="imoveis">imoveis</option>
+        <option value="leads">leads</option>
+        <option value="contratos">contratos</option>
+        <option value="cobr">cobr</option>
+        <option value="leads_loc">leads_loc</option>
+        <option value="manutencao">manutencao</option>
+      </select>
+    </div>
+    <div id="lista-dados"><div style="color:#8b949e;font-size:11px;text-align:center;padding:20px">Clique em "Recarregar dados"</div></div>
+  </div>
+</div>
+
+</div><!-- /wrap -->
+
+<script type="module">
+import { initializeApp, getApps } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js';
+import {
+  getFirestore, collection, addDoc, getDocs, deleteDoc,
+  doc, onSnapshot, serverTimestamp, query, orderBy, getCountFromServer
+} from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
+
+const firebaseConfig = {
+  apiKey: "AIzaSyDEa19EQxhpxNNDJyxdlC48kfoP0BQtHso",
+  authDomain: "imopro-portal.firebaseapp.com",
+  projectId: "imopro-portal",
+  storageBucket: "imopro-portal.firebasestorage.app",
+  messagingSenderId: "251931175141",
+  appId: "1:251931175141:web:3825de4996e9eb565a8c0c"
+};
+
+let db = null;
+let app = null;
+
+// ===== LOG =====
+function log(msg, tipo='info') {
+  const box = document.getElementById('log');
+  const ts = new Date().toLocaleTimeString('pt-BR');
+  const cls = tipo==='ok'?'l-ok':tipo==='err'?'l-err':tipo==='warn'?'l-warn':tipo==='info'?'l-info':'l-mu';
+  box.innerHTML += `\n<span class="${cls}">[${ts}] ${msg}</span>`;
+  box.scrollTop = box.scrollHeight;
+}
+
+function setStep(id, status, txt) {
+  const el = document.getElementById('s'+id);
+  el.className = 'step ' + status;
+  document.getElementById('s'+id+'-t').textContent = txt;
+}
+
+function showAlert(msg, tipo='ok') {
+  document.getElementById('alert-test').innerHTML = `<div class="alert al-${tipo}"><i class="ti ti-${tipo==='ok'?'circle-check':tipo==='err'?'circle-x':'alert-triangle'}"></i>${msg}</div>`;
+  setTimeout(()=>document.getElementById('alert-test').innerHTML='', 4000);
+}
+
+// ===== CONTADORES TEMPO REAL =====
+async function initContadores() {
+  const cols = ['imoveis','leads','contratos','cobr','manutencao'];
+  const ids  = ['imoveis','leads','contratos','cobr','manut'];
+  cols.forEach((col, i) => {
+    onSnapshot(collection(db, col), snap => {
+      const n = snap.size;
+      const el = document.getElementById('n-'+ids[i]);
+      el.textContent = n;
+      const card = document.getElementById('cnt-'+ids[i]);
+      card.className = 'counter-card ' + (n>0?'ok':'');
+    });
+  });
+}
+
+// ===== DIAGNÓSTICO =====
+async function diagnosticar() {
+  log('🚀 Iniciando diagnóstico completo do Firebase...', 'info');
+
+  // STEP 1 — SDK
+  setStep(1,'running','Carregando...');
+  try {
+    log('📦 Firebase SDK 10.12.0 importado com sucesso', 'ok');
+    setStep(1,'ok','✅ SDK OK');
+  } catch(e) {
+    setStep(1,'err','❌ Erro SDK');
+    log('❌ Erro SDK: '+e.message, 'err');
+    return;
+  }
+
+  // STEP 2 — INIT APP
+  setStep(2,'running','Inicializando...');
+  try {
+    const existing = getApps();
+    app = existing.length ? existing[0] : initializeApp(firebaseConfig);
+    log(`🔥 Firebase App inicializado: ${app.options.projectId}`, 'ok');
+    log(`🔐 Auth Domain: ${app.options.authDomain}`, 'mu');
+    log(`📱 App ID: ${app.options.appId}`, 'mu');
+    setStep(2,'ok','✅ App OK');
+  } catch(e) {
+    setStep(2,'err','❌ Erro Init');
+    log('❌ Erro inicialização: '+e.message, 'err');
+    return;
+  }
+
+  // STEP 3 — FIRESTORE
+  setStep(3,'running','Conectando...');
+  try {
+    db = getFirestore(app);
+    log('🗄️ Firestore instância criada', 'ok');
+    log(`🌐 Projeto: imopro-portal`, 'ok');
+    setStep(3,'ok','✅ Firestore OK');
+    window._db = db;
+  } catch(e) {
+    setStep(3,'err','❌ Sem Firestore');
+    log('❌ Erro Firestore: '+e.message, 'err');
+    return;
+  }
+
+  // STEP 4 — ESCRITA
+  setStep(4,'running','Testando...');
+  try {
+    log('✍️ Tentando escrever documento de teste...', 'warn');
+    const testRef = await addDoc(collection(db, '_diagnostico'), {
+      teste: true,
+      ts: serverTimestamp(),
+      msg: 'Diagnóstico ImóPro',
+      criadoEm: new Date().toISOString()
+    });
+    log(`✅ Documento gravado com ID: ${testRef.id}`, 'ok');
+    setStep(4,'ok','✅ Escrita OK');
+
+    // Limpar doc de teste
+    await deleteDoc(doc(db, '_diagnostico', testRef.id));
+    log('🗑️ Documento de teste removido', 'mu');
+  } catch(e) {
+    setStep(4,'err','❌ Sem permissão');
+    log('❌ Erro escrita: '+e.message, 'err');
+    log('⚠️ Verifique as regras do Firestore no Console Firebase', 'warn');
+    log('📋 Acesse: Firebase Console → Firestore → Rules', 'warn');
+    log('📋 Use: allow read, write: if true; (para desenvolvimento)', 'warn');
+    // ainda tenta leitura
+  }
+
+  // STEP 5 — LEITURA
+  setStep(5,'running','Lendo...');
+  try {
+    log('📖 Tentando ler coleção "imoveis"...', 'warn');
+    const snap = await getDocs(collection(db, 'imoveis'));
+    log(`✅ Leitura OK — ${snap.size} documento(s) em "imoveis"`, 'ok');
+    setStep(5,'ok',`✅ ${snap.size} docs`);
+    await initContadores();
+    log('📊 Contadores em tempo real ativados para todas as coleções', 'ok');
+    log('', 'mu');
+    log('🎉 DIAGNÓSTICO CONCLUÍDO — Firebase funcionando!', 'ok');
+  } catch(e) {
+    setStep(5,'err','❌ Erro leitura');
+    log('❌ Erro leitura: '+e.message, 'err');
+  }
+}
+
+// ===== ESCRITA MANUAL =====
+window.testarEscrita = async () => {
+  if (!db) { showAlert('Firebase não inicializado ainda.','err'); return; }
+  try {
+    const ref = await addDoc(collection(db,'_teste'), { ts: serverTimestamp(), ok: true });
+    log(`✅ Teste escrita manual OK — ID: ${ref.id}`, 'ok');
+    await deleteDoc(doc(db,'_teste',ref.id));
+    log('🗑️ Removido doc teste','mu');
+    showAlert('✅ Escrita e remoção no Firestore funcionando!');
+  } catch(e) {
+    log('❌ Erro escrita manual: '+e.message,'err');
+    showAlert('❌ Erro: '+e.message,'err');
+  }
+};
+
+// ===== INSERIR TESTE =====
+window.inserirTeste = async () => {
+  if (!db) { showAlert('Firebase não pronto.','err'); return; }
+  const col = document.getElementById('t-col').value;
+  const nome = document.getElementById('t-nome').value.trim() || 'Teste';
+  const val  = parseFloat(document.getElementById('t-val').value)||0;
+  const btn  = document.getElementById('btn-insert');
+  btn.disabled=true; btn.innerHTML='<span class="spinner"></span> Salvando...';
+  try {
+    const ref = await addDoc(collection(db, col), {
+      titulo: nome, nome: nome, locatario: nome,
+      valor: val, preco: val,
+      status: 'Ativo',
+      origem: 'diagnostico',
+      criadoEm: serverTimestamp()
+    });
+    log(`✅ [${col}] Inserido "${nome}" — ID: ${ref.id}`, 'ok');
+    showAlert(`✅ "${nome}" salvo em "${col}" com sucesso!`);
+    lerColecao();
+  } catch(e) {
+    log(`❌ [${col}] Erro: ${e.message}`, 'err');
+    showAlert('❌ Erro: '+e.message,'err');
+  }
+  btn.disabled=false; btn.innerHTML='<i class="ti ti-device-floppy"></i> Salvar no Firestore';
+};
+
+// ===== LER COLEÇÃO =====
+window.lerColecao = async () => {
+  if (!db) { log('⚠️ db não pronto ainda','warn'); return; }
+  const col = document.getElementById('sel-col').value;
+  const el = document.getElementById('lista-dados');
+  el.innerHTML = '<div style="color:#8b949e;font-size:11px;text-align:center;padding:15px"><span class="spinner" style="border-top-color:#e8a020"></span> Carregando...</div>';
+  try {
+    const snap = await getDocs(query(collection(db, col), orderBy('criadoEm','desc')));
+    log(`📖 Lida coleção "${col}": ${snap.size} documento(s)`, 'ok');
+    if (!snap.size) {
+      el.innerHTML='<div style="color:#8b949e;font-size:11px;text-align:center;padding:20px">Coleção vazia. Insira um dado de teste!</div>';
+      return;
+    }
+    el.innerHTML = snap.docs.map(d => {
+      const data = d.data();
+      const nome = data.titulo || data.nome || data.locatario || data.descricao || '—';
+      const val  = data.valor || data.preco || 0;
+      const st   = data.status || 'Ativo';
+      const stCls= st==='Ativo'||st==='Pago'?'tg':st==='Pendente'||st==='Aberto'?'to':'tr';
+      return `<div class="data-item">
+        <div style="flex:1">
+          <div style="font-weight:700;margin-bottom:2px">${nome}</div>
+          <div class="data-id">ID: ${d.id}</div>
+          ${val?`<div style="color:#e8a020;font-size:11px">R$${Number(val).toLocaleString('pt-BR')}</div>`:''}
+        </div>
+        <span class="tag ${stCls}">${st}</span>
+        <button class="del-btn" onclick="removerDoc('${col}','${d.id}')" title="Remover"><i class="ti ti-trash"></i></button>
+      </div>`;
+    }).join('');
+  } catch(e) {
+    log(`❌ Erro leitura "${col}": ${e.message}`, 'err');
+    el.innerHTML=`<div style="color:#e17055;font-size:11px;padding:12px">❌ Erro: ${e.message}</div>`;
+  }
+};
+
+// ===== REMOVER =====
+window.removerDoc = async (col, id) => {
+  if (!confirm(`Remover doc "${id}" de "${col}"?`)) return;
+  try {
+    await deleteDoc(doc(db, col, id));
+    log(`🗑️ Removido "${id}" de "${col}"`, 'warn');
+    lerColecao();
+  } catch(e) { log(`❌ Erro remoção: ${e.message}`,'err'); }
+};
+
+// ===== RETESTAR =====
+window.retestar = () => {
+  document.getElementById('log').innerHTML = '<span class="l-mu">// Retestando...</span>';
+  ['1','2','3','4','5'].forEach(i => {
+    setStep(i,'','Aguardando...');
+  });
+  diagnosticar();
+};
+
+// ===== INIT =====
+diagnosticar();
+</script>
+</body>
+</html>

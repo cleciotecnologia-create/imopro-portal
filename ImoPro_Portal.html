@@ -3,390 +3,316 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ImóPro — Portal Imobiliário Completo</title>
+<title>ImóPro — Portal Imobiliário</title>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/dist/tabler-icons.min.css">
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 :root{
-  --pr:#1a3a5c;--pr2:#1b6ca8;--acc:#e8a020;--green:#2ecc71;--warn:#e17055;--info:#0984e3;--loc:#0f4c75;--loc-acc:#00b894;
-  --bg:#f4f6f9;--card:#ffffff;--bd:#e2e8f0;--tx:#1a202c;--mu:#718096;--r:10px
+  --pr:#1a3a5c;--acc:#e8a020;--green:#2ecc71;--warn:#e17055;--info:#0984e3;
+  --loc:#0f4c75;--lac:#00b894;
+  --bg:#f4f6f9;--card:#fff;--bd:#e2e8f0;--tx:#1a202c;--mu:#718096;--r:10px
 }
 body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--tx);font-size:13px}
-
-/* ===== LAYOUT ===== */
 .shell{display:flex;height:100vh;overflow:hidden}
-.sidebar{width:220px;min-width:220px;background:var(--pr);color:#fff;display:flex;flex-direction:column;overflow-y:auto;flex-shrink:0}
-.sb-logo{padding:18px 16px 12px;font-size:17px;font-weight:700;border-bottom:1px solid rgba(255,255,255,.1);display:flex;align-items:center;gap:8px}
+
+/* SIDEBAR */
+.sb{width:220px;min-width:220px;background:var(--pr);color:#fff;display:flex;flex-direction:column;overflow-y:auto;flex-shrink:0}
+.sb-logo{padding:16px 15px 11px;font-size:16px;font-weight:700;border-bottom:1px solid rgba(255,255,255,.1);display:flex;align-items:center;gap:7px}
 .sb-logo span{color:var(--acc)}
-.sb-logo em{font-style:normal;font-size:10px;background:rgba(0,206,201,.2);color:#00cec9;padding:1px 7px;border-radius:20px;margin-left:4px}
-.sb-sec{font-size:9px;text-transform:uppercase;letter-spacing:1.2px;color:rgba(255,255,255,.35);padding:13px 16px 3px}
-.ni{display:flex;align-items:center;gap:9px;padding:8px 16px;font-size:12px;cursor:pointer;color:rgba(255,255,255,.72);border-left:3px solid transparent;transition:all .13s;user-select:none}
+.sb-logo em{font-style:normal;font-size:9px;background:rgba(255,165,0,.18);color:#ffb347;padding:1px 7px;border-radius:20px;margin-left:3px}
+.sb-sec{font-size:9px;text-transform:uppercase;letter-spacing:1.2px;color:rgba(255,255,255,.35);padding:12px 15px 2px}
+.ni{display:flex;align-items:center;gap:8px;padding:7px 15px;font-size:12px;cursor:pointer;color:rgba(255,255,255,.72);border-left:3px solid transparent;transition:all .12s;user-select:none}
 .ni:hover{background:rgba(255,255,255,.08);color:#fff}
 .ni.on{background:rgba(232,160,32,.15);color:var(--acc);border-left-color:var(--acc)}
-.ni i{font-size:15px;width:18px;text-align:center}
+.ni i{font-size:14px;width:17px;text-align:center}
 .bdg{font-size:9px;padding:1px 5px;border-radius:10px;margin-left:auto;background:#e17055;color:#fff;font-weight:700}
-.bdg.g{background:#2ecc71}
-.bdg.b{background:#0984e3}
+.bdg.g{background:#2ecc71}.bdg.b{background:#0984e3}
+
+/* MAIN */
 .main{flex:1;display:flex;flex-direction:column;overflow:hidden}
-.topbar{background:var(--card);border-bottom:1px solid var(--bd);padding:0 20px;height:52px;display:flex;align-items:center;gap:10px;flex-shrink:0;box-shadow:0 1px 3px rgba(0,0,0,.06)}
-.tb-title{font-size:15px;font-weight:600;flex:1}
-.content{flex:1;overflow-y:auto;padding:18px 20px}
+.topbar{background:var(--card);border-bottom:1px solid var(--bd);padding:0 18px;height:50px;display:flex;align-items:center;gap:9px;flex-shrink:0;box-shadow:0 1px 3px rgba(0,0,0,.05)}
+.tb-t{font-size:14px;font-weight:600;flex:1}
+.fb-st{display:flex;align-items:center;gap:5px;font-size:11px;color:var(--mu);margin-right:4px}
+.fb-dot{width:8px;height:8px;border-radius:50%;background:#ccc}
+.fb-dot.ok{background:#2ecc71;box-shadow:0 0 5px #2ecc71}
+.fb-dot.loading{background:#f39c12;animation:pulse 1s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+.tbtn{display:flex;align-items:center;gap:5px;padding:5px 12px;border-radius:7px;font-size:11px;cursor:pointer;border:none;font-weight:600}
+.tbtn.pr{background:var(--pr);color:#fff}.tbtn.ac{background:var(--acc);color:#fff}
+.tbtn.gr{background:var(--green);color:#fff}.tbtn.wn{background:var(--warn);color:#fff}
+.content{flex:1;overflow-y:auto;padding:16px 18px}
 .pg{display:none}.pg.on{display:block}
 
-/* ===== BUTTONS ===== */
-.tbtn{display:flex;align-items:center;gap:5px;padding:6px 13px;border-radius:8px;font-size:12px;cursor:pointer;border:none;font-weight:500}
-.tbtn.pr{background:var(--pr);color:#fff}
-.tbtn.ac{background:var(--acc);color:#fff}
-.tbtn.gr{background:var(--green);color:#fff}
-.tbtn.wn{background:var(--warn);color:#fff}
-.tbtn.lo{background:var(--loc);color:#fff}
-.tbtn.la{background:var(--loc-acc);color:#fff}
-.bs{padding:5px 11px;border-radius:6px;font-size:11px;cursor:pointer;border:none;font-weight:500}
-.bp{background:var(--pr);color:#fff}.ba{background:var(--acc);color:#fff}
-.bgr{background:var(--green);color:#fff}.bw{background:var(--warn);color:#fff}
-.bi{background:var(--info);color:#fff}.blo{background:var(--loc);color:#fff}
-.bla{background:var(--loc-acc);color:#fff}
-.bo{background:transparent;border:1px solid var(--bd)!important;color:var(--tx)}
-
-/* ===== CARDS & PANELS ===== */
-.metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:11px;margin-bottom:16px}
-.mc{background:var(--card);border:1px solid var(--bd);border-radius:var(--r);padding:14px 16px;box-shadow:0 1px 3px rgba(0,0,0,.04)}
-.ml{font-size:11px;color:var(--mu);margin-bottom:4px}
-.mv{font-size:22px;font-weight:600}
-.mch{font-size:11px;margin-top:2px}
-.up{color:#2ecc71}.dn{color:#e17055}.nu{color:var(--mu)}
-.g2{display:grid;grid-template-columns:1fr 1fr;gap:13px;margin-bottom:14px}
-.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:13px;margin-bottom:14px}
-.pnl{background:var(--card);border:1px solid var(--bd);border-radius:var(--r);padding:14px 16px;box-shadow:0 1px 3px rgba(0,0,0,.04)}
-.pt{font-size:13px;font-weight:600;margin-bottom:11px;display:flex;align-items:center;gap:6px}
+/* CARDS */
+.metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:14px}
+.mc{background:var(--card);border:1px solid var(--bd);border-radius:var(--r);padding:13px 15px;box-shadow:0 1px 3px rgba(0,0,0,.04)}
+.ml{font-size:10px;color:var(--mu);margin-bottom:3px}.mv{font-size:21px;font-weight:700}
+.mch{font-size:10px;margin-top:2px}.up{color:#2ecc71}.dn{color:#e17055}.nu{color:var(--mu)}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:13px}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:13px}
+.pnl{background:var(--card);border:1px solid var(--bd);border-radius:var(--r);padding:13px 15px;box-shadow:0 1px 3px rgba(0,0,0,.04)}
+.pt{font-size:12px;font-weight:600;margin-bottom:10px;display:flex;align-items:center;gap:5px}
 .pt i{color:var(--acc)}
-.row{display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid var(--bd);font-size:12px}
+.row{display:flex;align-items:center;gap:7px;padding:5px 0;border-bottom:1px solid var(--bd);font-size:11px}
 .row:last-child{border-bottom:none}
-.tag{display:inline-flex;padding:2px 8px;border-radius:20px;font-size:10px;font-weight:600}
+.tag{display:inline-flex;padding:2px 7px;border-radius:20px;font-size:10px;font-weight:600}
 .tg{background:#e8f8f0;color:#0f6e56}.to{background:#fef3e2;color:#854f0b}
 .tr{background:#fcebeb;color:#a32d2d}.tb{background:#e6f1fb;color:#0c447c}
 .tp{background:#eeedfe;color:#3c3489}.tgr{background:#e8fbe8;color:#157015}
-.av{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:600;flex-shrink:0}
+.av{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;flex-shrink:0}
 .avb{background:#e6f1fb;color:#0c447c}.avg{background:#e8f8f0;color:#0f6e56}
 .ava{background:#fef3e2;color:#854f0b}.avr{background:#fcebeb;color:#a32d2d}
 
-/* ===== FORM ===== */
-.fgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+/* FORM */
+.fgrid{display:grid;grid-template-columns:1fr 1fr;gap:9px}
 .full{grid-column:1/-1}
-.fg{display:flex;flex-direction:column;gap:4px}
-.fl{font-size:11px;color:var(--mu);font-weight:600}
-.fi{padding:7px 10px;border-radius:7px;border:1px solid var(--bd);font-size:12px;background:var(--card);color:var(--tx);width:100%}
+.fg{display:flex;flex-direction:column;gap:3px}
+.fl{font-size:10px;color:var(--mu);font-weight:600}
+.fi{padding:7px 9px;border-radius:7px;border:1px solid var(--bd);font-size:11px;background:#fff;color:var(--tx);width:100%}
 .fi:focus{outline:none;border-color:var(--acc)}
-textarea.fi{resize:vertical;min-height:70px}
+textarea.fi{resize:vertical;min-height:65px}
 
-/* ===== MISC ===== */
-.sbar{height:8px;border-radius:5px;background:#eee;overflow:hidden;margin:4px 0}
-.sfill{height:100%;border-radius:5px;transition:width .3s}
-.hr{border:none;border-top:1px solid var(--bd);margin:10px 0}
-.notif{background:#f8fafc;border-radius:8px;padding:9px 11px;margin-bottom:6px;font-size:11px;display:flex;gap:8px;align-items:flex-start;border:1px solid var(--bd)}
-.dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;margin-top:2px}
-.tl-item{display:flex;gap:10px;padding:6px 0;font-size:11px}
-.tl-dot{width:9px;height:9px;border-radius:50%;flex-shrink:0;margin-top:2px}
+/* BUTTONS */
+.bs{padding:5px 11px;border-radius:6px;font-size:11px;cursor:pointer;border:none;font-weight:600;display:inline-flex;align-items:center;gap:4px}
+.bs:disabled{opacity:.5;cursor:not-allowed}
+.bp{background:var(--pr);color:#fff}.ba{background:var(--acc);color:#fff}
+.bgr{background:var(--green);color:#fff}.bw{background:var(--warn);color:#fff}
+.bi{background:var(--info);color:#fff}.blo{background:var(--loc);color:#fff}
+.bla{background:var(--lac);color:#fff}
+.bo{background:transparent;border:1px solid var(--bd)!important;color:var(--tx)}
 
-/* IMOVEIS GRID */
-.imoveis-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:13px}
+/* IMOVEIS */
 .icard{background:var(--card);border:1px solid var(--bd);border-radius:var(--r);overflow:hidden;transition:transform .15s;cursor:pointer}
 .icard:hover{transform:translateY(-2px);box-shadow:0 4px 12px rgba(0,0,0,.1)}
-.ithumb{height:110px;display:flex;align-items:center;justify-content:center;font-size:36px;position:relative}
-.ithumb .tt{position:absolute;top:7px;right:7px}
-.icbody{padding:10px 12px}
-.ict{font-size:12px;font-weight:600;margin-bottom:3px}
-.ica{font-size:11px;color:var(--mu);margin-bottom:5px}
-.icp{font-size:14px;font-weight:700;color:var(--pr)}
-.icd{display:flex;gap:9px;margin-top:5px;font-size:11px;color:var(--mu)}
-.icact{display:flex;gap:5px;padding:8px 12px;border-top:1px solid var(--bd);background:#fafafa}
+.ithumb{height:100px;display:flex;align-items:center;justify-content:center;font-size:34px;position:relative}
+.ithumb .tt{position:absolute;top:6px;right:6px}
+.icbody{padding:9px 11px}
+.ict{font-size:12px;font-weight:600;margin-bottom:2px}
+.ica{font-size:11px;color:var(--mu);margin-bottom:4px}
+.icp{font-size:13px;font-weight:700;color:var(--pr)}
+.icd{display:flex;gap:8px;margin-top:4px;font-size:10px;color:var(--mu)}
+.icact{display:flex;gap:5px;padding:7px 11px;border-top:1px solid var(--bd);background:#fafafa}
+.imoveis-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(185px,1fr));gap:12px}
 
 /* KANBAN */
-.kanban{display:flex;gap:11px;overflow-x:auto;padding-bottom:8px}
-.kcol{min-width:160px;flex:1}
-.kh{font-size:12px;font-weight:600;padding:8px 10px;border-radius:8px 8px 0 0;display:flex;justify-content:space-between}
+.kanban{display:flex;gap:10px;overflow-x:auto;padding-bottom:8px}
+.kcol{min-width:155px;flex:1}
+.kh{font-size:11px;font-weight:600;padding:7px 10px;border-radius:7px 7px 0 0;display:flex;justify-content:space-between}
 .kh.n{background:#e6f1fb;color:#0c447c}.kh.c{background:#e8f8f0;color:#0f6e56}
 .kh.v{background:#fef3e2;color:#854f0b}.kh.p{background:#eeedfe;color:#3c3489}
 .kh.f{background:#e8fbe8;color:#157015}
-.kbody{background:#f8fafc;border-radius:0 0 8px 8px;padding:8px;min-height:180px;border:1px solid var(--bd);border-top:none}
-.lcard{background:var(--card);border:1px solid var(--bd);border-radius:8px;padding:10px;margin-bottom:7px;cursor:pointer;font-size:12px}
+.kbody{background:#f8fafc;border-radius:0 0 7px 7px;padding:7px;min-height:160px;border:1px solid var(--bd);border-top:none}
+.lcard{background:var(--card);border:1px solid var(--bd);border-radius:7px;padding:9px;margin-bottom:6px;font-size:11px}
 .lcard:hover{border-color:var(--acc)}
-.lc-n{font-weight:600;margin-bottom:2px}.lc-i{color:var(--mu);font-size:11px;margin-bottom:5px}
+.lc-n{font-weight:600;margin-bottom:2px}.lc-i{color:var(--mu);font-size:10px;margin-bottom:5px}
 .lc-f{display:flex;justify-content:space-between;align-items:center}
-.wa-btn{display:inline-flex;align-items:center;gap:4px;background:#25d366;color:#fff;border:none;border-radius:5px;padding:3px 8px;font-size:10px;cursor:pointer}
+.wa-btn{display:inline-flex;align-items:center;gap:3px;background:#25d366;color:#fff;border:none;border-radius:4px;padding:2px 7px;font-size:10px;cursor:pointer}
 
-/* PORTAL HEADER */
-.pc-wrap{margin-bottom:11px}
-.pc-h{background:var(--loc);color:#fff;padding:10px 13px;border-radius:8px 8px 0 0;display:flex;align-items:center;justify-content:space-between;font-size:12px}
-.pc-b{padding:12px 14px;border:1px solid var(--bd);border-top:none;border-radius:0 0 8px 8px;background:var(--card)}
-
-/* BANNER */
-.banner-prev{background:linear-gradient(135deg,#1a3a5c 60%,#e8a020 100%);border-radius:var(--r);padding:24px;color:#fff;text-align:center;min-height:140px;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:8px}
-.ban-title{font-size:20px;font-weight:700}
-.ban-sub{font-size:12px;opacity:.85}
-.ban-price{font-size:26px;font-weight:800;color:var(--acc)}
-.ban-cta{background:var(--acc);color:#fff;border:none;border-radius:6px;padding:7px 22px;font-size:13px;font-weight:600;cursor:pointer;margin-top:5px}
-.tpl-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:6px}
-.tpl-card{border:2px solid transparent;border-radius:8px;cursor:pointer;overflow:hidden}
-.tpl-card:hover,.tpl-card.sel{border-color:var(--acc)}
-.tpl-thumb{height:60px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:600;color:#fff}
-
-/* CHAT */
-.cb{background:#f0f0f0;border-radius:10px 10px 10px 0;padding:8px 11px;font-size:11px;display:inline-block;max-width:85%;margin-bottom:5px}
-.cb.out{background:#e6f1fb;border-radius:10px 10px 0 10px;color:#0c447c}
+/* MISC */
+.sbar{height:7px;border-radius:4px;background:#eee;overflow:hidden;margin:4px 0}
+.sfill{height:100%;border-radius:4px;transition:width .3s}
+.hr{border:none;border-top:1px solid var(--bd);margin:9px 0}
+.notif{background:#f8fafc;border-radius:7px;padding:8px 10px;margin-bottom:5px;font-size:11px;display:flex;gap:7px;align-items:flex-start;border:1px solid var(--bd)}
+.ndot{width:7px;height:7px;border-radius:50%;flex-shrink:0;margin-top:2px}
+.tl-item{display:flex;gap:9px;padding:5px 0;font-size:11px}
+.tl-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;margin-top:2px}
+.cb-chat{background:#f0f0f0;border-radius:10px 10px 10px 0;padding:7px 10px;font-size:11px;display:inline-block;max-width:85%;margin-bottom:4px}
+.cb-chat.out{background:#e6f1fb;border-radius:10px 10px 0 10px;color:#0c447c}
 .ct{font-size:9px;color:var(--mu);margin-top:1px}
-
-/* SPLIT SLIDER */
-#sl-prop{accent-color:var(--loc)}
-
-/* IR BOX */
-.ir-box{border:1px solid var(--bd);border-radius:8px;padding:11px 13px;margin-bottom:9px}
-.ir-title{font-size:12px;font-weight:600;margin-bottom:6px;display:flex;align-items:center;gap:5px}
-
-/* DIMOB */
-.dimob-c{background:#f8fafc;border-radius:8px;padding:10px 12px;margin-bottom:8px;border:1px solid var(--bd)}
-.dimob-h{font-weight:600;font-size:12px;margin-bottom:4px;display:flex;justify-content:space-between;align-items:center}
-
-/* UPLOAD */
-.upload-zone{border:2px dashed var(--bd);border-radius:var(--r);padding:22px;text-align:center;color:var(--mu);font-size:12px;cursor:pointer}
-.upload-zone:hover{border-color:var(--acc)}
-.upload-zone i{font-size:28px;color:var(--acc);display:block;margin-bottom:6px}
-.photo-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;margin-top:10px}
-.photo-th{aspect-ratio:1;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:20px;position:relative;overflow:hidden}
-.pdel{position:absolute;top:2px;right:2px;background:rgba(0,0,0,.5);color:#fff;border:none;border-radius:50%;width:17px;height:17px;font-size:10px;cursor:pointer;display:flex;align-items:center;justify-content:center}
-
-/* STEP REGULACAO */
-.reg-step{display:flex;gap:12px;padding:11px;background:var(--card);border:1px solid var(--bd);border-radius:8px;margin-bottom:7px}
-.snum{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0}
+.reg-step{display:flex;gap:11px;padding:10px;background:var(--card);border:1px solid var(--bd);border-radius:7px;margin-bottom:6px}
+.snum{width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0}
 .sdn{background:#e8f8f0;color:#0f6e56}.sac{background:#fef3e2;color:#854f0b}.spd{background:#f0f0f0;color:#888}
-
-/* TOOLBAR */
-.toolbar{display:flex;gap:8px;margin-bottom:13px;flex-wrap:wrap;align-items:center}
-.toolbar input,.toolbar select{padding:7px 10px;border-radius:8px;border:1px solid var(--bd);font-size:12px;background:var(--card);color:var(--tx)}
-.toolbar input{flex:1;min-width:160px}
-
-/* CONTACTS LIST */
-.contacts-list{max-height:140px;overflow-y:auto}
-.cr{display:flex;align-items:center;gap:8px;padding:5px 0;border-bottom:1px solid var(--bd);font-size:12px}
-.cr:last-child{border-bottom:none}
-
-/* WA PREVIEW */
-.wa-prev{background:#e5ddd5;border-radius:8px;padding:12px;margin-top:9px;min-height:110px}
-.wa-bubble{background:#dcf8c6;border-radius:10px 10px 0 10px;padding:9px 12px;display:inline-block;font-size:11px;max-width:88%}
-.wa-bubble b{display:block;font-size:12px;margin-bottom:3px;color:#075e54}
-.wa-time{font-size:9px;color:#888;text-align:right}
-
-/* MINI BARS */
-.mini-bar{height:5px;border-radius:3px;background:#eee;margin-top:3px}
+.banner-prev{background:linear-gradient(135deg,#1a3a5c 60%,#e8a020 100%);border-radius:var(--r);padding:22px;color:#fff;text-align:center;min-height:130px;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:7px}
+.ban-cta{background:var(--acc);color:#fff;border:none;border-radius:6px;padding:6px 20px;font-size:12px;font-weight:700;cursor:pointer;margin-top:4px}
+.tpl-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-top:5px}
+.tpl-card{border:2px solid transparent;border-radius:7px;cursor:pointer;overflow:hidden}
+.tpl-card:hover,.tpl-card.sel{border-color:var(--acc)}
+.tpl-thumb{height:55px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:#fff}
+.upload-zone{border:2px dashed var(--bd);border-radius:var(--r);padding:20px;text-align:center;color:var(--mu);font-size:11px;cursor:pointer}
+.upload-zone:hover{border-color:var(--acc)}
+.upload-zone i{font-size:26px;color:var(--acc);display:block;margin-bottom:5px}
+.photo-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:5px;margin-top:9px}
+.photo-th{aspect-ratio:1;border-radius:5px;display:flex;align-items:center;justify-content:center;font-size:18px;position:relative;overflow:hidden}
+.pdel{position:absolute;top:2px;right:2px;background:rgba(0,0,0,.5);color:#fff;border:none;border-radius:50%;width:15px;height:15px;font-size:9px;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.ir-box{border:1px solid var(--bd);border-radius:7px;padding:10px 12px;margin-bottom:8px}
+.mini-bar{height:4px;border-radius:3px;background:#eee;margin-top:3px}
 .mini-fill{height:100%;border-radius:3px}
-
-/* CRED RESULT */
-#cred-res{display:none;margin-top:9px;background:#f8fafc;border-radius:8px;padding:10px;font-size:11px;border:1px solid var(--bd)}
-#ir-res{background:#f8fafc;border-radius:8px;padding:10px;font-size:11px;margin-bottom:9px}
-
-/* SCROLLBAR */
-::-webkit-scrollbar{width:5px;height:5px}
-::-webkit-scrollbar-track{background:transparent}
+.pc-wrap{margin-bottom:10px}
+.pc-h{background:var(--loc);color:#fff;padding:9px 12px;border-radius:7px 7px 0 0;display:flex;align-items:center;justify-content:space-between;font-size:12px}
+.pc-b{padding:11px 13px;border:1px solid var(--bd);border-top:none;border-radius:0 0 7px 7px;background:var(--card)}
+.dimob-c{background:#f8fafc;border-radius:7px;padding:9px 11px;margin-bottom:7px;border:1px solid var(--bd)}
+.spinner{display:inline-block;width:12px;height:12px;border:2px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.alert{border-radius:7px;padding:8px 11px;font-size:11px;margin-bottom:9px;display:flex;align-items:center;gap:7px}
+.al-ok{background:#e8f8f0;border:1px solid #a3d9b8;color:#0f6e56}
+.al-err{background:#fcebeb;border:1px solid #f5a0a0;color:#a32d2d}
+.loading-row{text-align:center;color:var(--mu);font-size:11px;padding:20px}
+.empty-state{text-align:center;color:var(--mu);font-size:11px;padding:24px}
+.empty-state i{font-size:28px;display:block;margin-bottom:6px;opacity:.35}
+.toolbar{display:flex;gap:7px;margin-bottom:12px;flex-wrap:wrap;align-items:center}
+.toolbar input,.toolbar select{padding:6px 9px;border-radius:7px;border:1px solid var(--bd);font-size:11px;background:#fff;color:var(--tx)}
+.toolbar input{flex:1;min-width:150px}
+::-webkit-scrollbar{width:4px;height:4px}
 ::-webkit-scrollbar-thumb{background:#cbd5e0;border-radius:3px}
 </style>
 </head>
 <body>
 <div class="shell">
 
-<!-- ===== SIDEBAR ===== -->
-<div class="sidebar">
-  <div class="sb-logo"><i class="ti ti-building-estate"></i> Imó<span>Pro</span> <em>v1.0</em></div>
-
+<!-- SIDEBAR -->
+<div class="sb">
+  <div class="sb-logo"><i class="ti ti-building-estate"></i> Imó<span>Pro</span> <em>🔥 Firebase</em></div>
   <div class="sb-sec">Principal</div>
   <div class="ni on" onclick="sp('dashboard',this)"><i class="ti ti-dashboard"></i> Dashboard</div>
-  <div class="ni" onclick="sp('imoveis',this)"><i class="ti ti-building"></i> Imóveis <span class="bdg">14</span></div>
+  <div class="ni" onclick="sp('imoveis',this)"><i class="ti ti-building"></i> Imóveis <span class="bdg" id="bdg-imoveis">0</span></div>
   <div class="ni" onclick="sp('publicar',this)"><i class="ti ti-plus"></i> Publicar Imóvel</div>
-
   <div class="sb-sec">CRM</div>
-  <div class="ni" onclick="sp('crm',this)"><i class="ti ti-users"></i> Leads & Clientes <span class="bdg">7</span></div>
+  <div class="ni" onclick="sp('crm',this)"><i class="ti ti-users"></i> Leads <span class="bdg" id="bdg-leads">0</span></div>
   <div class="ni" onclick="sp('whatsapp',this)"><i class="ti ti-brand-whatsapp"></i> WhatsApp</div>
-
   <div class="sb-sec">Operações</div>
-  <div class="ni" onclick="sp('regulacao',this)"><i class="ti ti-file-certificate"></i> Regulação / Desp.</div>
+  <div class="ni" onclick="sp('regulacao',this)"><i class="ti ti-file-certificate"></i> Regulação</div>
   <div class="ni" onclick="sp('marketing',this)"><i class="ti ti-speakerphone"></i> Marketing & Banners</div>
-
-  <div class="sb-sec">Gestão de Locação</div>
+  <div class="sb-sec">Locação</div>
   <div class="ni" onclick="sp('loc-dash',this)"><i class="ti ti-home-check"></i> Dashboard Locação</div>
-  <div class="ni" onclick="sp('contratos',this)"><i class="ti ti-file-text"></i> Contratos <span class="bdg b">8</span></div>
-  <div class="ni" onclick="sp('cobr',this)"><i class="ti ti-credit-card"></i> Cobranças <span class="bdg">3</span></div>
+  <div class="ni" onclick="sp('contratos',this)"><i class="ti ti-file-text"></i> Contratos <span class="bdg b" id="bdg-contratos">0</span></div>
+  <div class="ni" onclick="sp('cobr',this)"><i class="ti ti-credit-card"></i> Cobranças <span class="bdg" id="bdg-cobr">0</span></div>
   <div class="ni" onclick="sp('split',this)"><i class="ti ti-arrows-split"></i> Split & Repasses</div>
   <div class="ni" onclick="sp('dimob',this)"><i class="ti ti-file-invoice"></i> DIMOB</div>
   <div class="ni" onclick="sp('ir',this)"><i class="ti ti-coin"></i> Imposto de Renda</div>
   <div class="ni" onclick="sp('portal-loc',this)"><i class="ti ti-device-laptop"></i> Portal Locatário</div>
-  <div class="ni" onclick="sp('leads-loc',this)"><i class="ti ti-user-search"></i> Leads Locação <span class="bdg g">5</span></div>
+  <div class="ni" onclick="sp('leads-loc',this)"><i class="ti ti-user-search"></i> Leads Locação <span class="bdg g" id="bdg-lleads">0</span></div>
   <div class="ni" onclick="sp('manut',this)"><i class="ti ti-tool"></i> Manutenção</div>
-
-  <div class="sb-sec">Relatórios</div>
+  <div class="sb-sec">Sistema</div>
   <div class="ni" onclick="sp('relatorios',this)"><i class="ti ti-chart-bar"></i> Relatórios</div>
   <div class="ni" onclick="sp('config',this)"><i class="ti ti-settings"></i> Configurações</div>
 </div>
 
-<!-- ===== MAIN ===== -->
+<!-- MAIN -->
 <div class="main">
 <div class="topbar">
-  <span class="tb-title" id="tb-title">Dashboard</span>
+  <span class="tb-t" id="tb-title">Dashboard</span>
+  <div class="fb-st"><div class="fb-dot loading" id="fb-dot"></div><span id="fb-st-txt">Conectando Firebase...</span></div>
   <button class="tbtn pr" onclick="sp('publicar',document.querySelector('[onclick*=publicar]'))"><i class="ti ti-plus"></i> Novo Imóvel</button>
-  <button class="tbtn la" onclick="sp('contratos',document.querySelector('[onclick*=contratos]'))"><i class="ti ti-file-text"></i> Contratos</button>
-  <button class="tbtn ac" onclick="sp('marketing',document.querySelector('[onclick*=marketing]'))"><i class="ti ti-speakerphone"></i> Marketing</button>
-  <button class="tbtn wn" onclick="sp('dimob',document.querySelector('[onclick*=dimob]'))"><i class="ti ti-file-invoice"></i> DIMOB</button>
+  <button class="tbtn ac" onclick="sp('contratos',document.querySelector('[onclick*=contratos]'))"><i class="ti ti-file-text"></i> Contratos</button>
+  <button class="tbtn gr" onclick="sp('marketing',document.querySelector('[onclick*=marketing]'))"><i class="ti ti-speakerphone"></i> Marketing</button>
 </div>
-
 <div class="content">
 
-<!-- ========== DASHBOARD VENDA ========== -->
+<!-- ======= DASHBOARD ======= -->
 <div class="pg on" id="pg-dashboard">
   <div class="metrics">
-    <div class="mc"><div class="ml">Imóveis Ativos</div><div class="mv">14</div><div class="mch up">↑ 3 este mês</div></div>
-    <div class="mc"><div class="ml">Leads no Funil</div><div class="mv">32</div><div class="mch up">↑ 8 esta semana</div></div>
-    <div class="mc"><div class="ml">Visitas Agendadas</div><div class="mv">7</div><div class="mch nu">próximos 7 dias</div></div>
-    <div class="mc"><div class="ml">VGV em Negociação</div><div class="mv" style="font-size:15px">R$3,2M</div><div class="mch up">↑ 12%</div></div>
+    <div class="mc"><div class="ml">Imóveis Ativos</div><div class="mv" id="d-imoveis">—</div><div class="mch up" id="d-imoveis-s">carregando...</div></div>
+    <div class="mc"><div class="ml">Leads no Funil</div><div class="mv" id="d-leads">—</div><div class="mch up" id="d-leads-s">carregando...</div></div>
+    <div class="mc"><div class="ml">Contratos Ativos</div><div class="mv" id="d-contratos">—</div><div class="mch nu" id="d-contratos-s">carregando...</div></div>
+    <div class="mc"><div class="ml">Cobranças Pendentes</div><div class="mv" id="d-cobr">—</div><div class="mch dn" id="d-cobr-s">carregando...</div></div>
   </div>
   <div class="g2">
     <div class="pnl">
-      <div class="pt"><i class="ti ti-building"></i> Imóveis Recentes</div>
-      <div class="row"><div style="font-size:24px;width:36px">🏠</div><div style="flex:1"><div style="font-weight:600">Casa Jd. Atlântico</div><div style="color:var(--mu)">R$450.000 · 120m²</div></div><span class="tag tg">Ativo</span></div>
-      <div class="row"><div style="font-size:24px;width:36px">🏢</div><div style="flex:1"><div style="font-weight:600">Apto 3q Centro</div><div style="color:var(--mu)">R$280.000 · 78m²</div></div><span class="tag tb">Destaque</span></div>
-      <div class="row"><div style="font-size:24px;width:36px">🏪</div><div style="flex:1"><div style="font-weight:600">Sala Comercial</div><div style="color:var(--mu)">R$1.800/mês · 45m²</div></div><span class="tag to">Aluguel</span></div>
-      <div class="row"><div style="font-size:24px;width:36px">🌿</div><div style="flex:1"><div style="font-weight:600">Terreno Zona Norte</div><div style="color:var(--mu)">R$120.000 · 360m²</div></div><span class="tag tgr">Novo</span></div>
+      <div class="pt"><i class="ti ti-building"></i> Últimos Imóveis</div>
+      <div id="dash-imoveis"><div class="loading-row"><i class="ti ti-loader-2"></i> Carregando...</div></div>
     </div>
     <div class="pnl">
-      <div class="pt"><i class="ti ti-users"></i> Leads Recentes</div>
-      <div class="row"><div class="av avb">JC</div><div style="flex:1"><div style="font-weight:600">João Carlos</div><div style="color:var(--mu)">Int. Casa 3q · WhatsApp</div></div><span class="tag tg">Novo</span></div>
-      <div class="row"><div class="av ava">MS</div><div style="flex:1"><div style="font-weight:600">Maria Silva</div><div style="color:var(--mu)">Apto Centro · Visita</div></div><span class="tag to">Visita</span></div>
-      <div class="row"><div class="av avg">PR</div><div style="flex:1"><div style="font-weight:600">Pedro Rocha</div><div style="color:var(--mu)">Sala Comercial · Proposta</div></div><span class="tag tb">Proposta</span></div>
-      <div class="row"><div class="av avb">LF</div><div style="flex:1"><div style="font-weight:600">Lúcia Ferreira</div><div style="color:var(--mu)">Terreno · Contato</div></div><span class="tag tgr">Contato</span></div>
+      <div class="pt"><i class="ti ti-users"></i> Últimos Leads</div>
+      <div id="dash-leads"><div class="loading-row"><i class="ti ti-loader-2"></i> Carregando...</div></div>
     </div>
   </div>
-  <div class="g3">
-    <div class="pnl"><div class="pt"><i class="ti ti-chart-pie"></i> Por Tipo</div>
-      <div style="font-size:12px">
-        <div style="display:flex;justify-content:space-between;margin-bottom:3px"><span>Casas</span><span>6 (43%)</span></div><div class="mini-bar"><div class="mini-fill" style="width:43%;background:var(--pr)"></div></div>
-        <div style="display:flex;justify-content:space-between;margin:7px 0 3px"><span>Apartamentos</span><span>5 (36%)</span></div><div class="mini-bar"><div class="mini-fill" style="width:36%;background:var(--acc)"></div></div>
-        <div style="display:flex;justify-content:space-between;margin:7px 0 3px"><span>Comercial</span><span>2 (14%)</span></div><div class="mini-bar"><div class="mini-fill" style="width:14%;background:var(--green)"></div></div>
-        <div style="display:flex;justify-content:space-between;margin:7px 0 3px"><span>Terrenos</span><span>1 (7%)</span></div><div class="mini-bar"><div class="mini-fill" style="width:7%;background:#9b59b6"></div></div>
-      </div>
+  <div class="g2">
+    <div class="pnl">
+      <div class="pt"><i class="ti ti-file-text"></i> Últimos Contratos</div>
+      <div id="dash-contratos"><div class="loading-row"><i class="ti ti-loader-2"></i> Carregando...</div></div>
     </div>
-    <div class="pnl"><div class="pt"><i class="ti ti-file-certificate"></i> Regulações</div>
-      <div class="row"><span style="flex:1">Casa Jd. Atlântico</span><span class="tag tg">OK</span></div>
-      <div class="row"><span style="flex:1">Apto 3q Centro</span><span class="tag to">Em andamento</span></div>
-      <div class="row"><span style="flex:1">Sala Comercial</span><span class="tag tb">Análise</span></div>
-      <div class="row"><span style="flex:1">Terreno Zona Norte</span><span class="tag tgr">Pendente</span></div>
-    </div>
-    <div class="pnl"><div class="pt"><i class="ti ti-speakerphone"></i> Campanhas Ativas</div>
-      <div class="row"><span style="flex:1">Instagram — Casa 3q</span><span style="color:#2ecc71;font-size:11px">↑ 248 alcance</span></div>
-      <div class="row"><span style="flex:1">WhatsApp — Lançamento</span><span style="color:var(--acc);font-size:11px">47 envios</span></div>
-      <div class="row"><span style="flex:1">Banner OLX — Apto</span><span style="color:#2ecc71;font-size:11px">↑ 91 cliques</span></div>
+    <div class="pnl">
+      <div class="pt"><i class="ti ti-credit-card"></i> Últimas Cobranças</div>
+      <div id="dash-cobr"><div class="loading-row"><i class="ti ti-loader-2"></i> Carregando...</div></div>
     </div>
   </div>
 </div>
 
-<!-- ========== IMÓVEIS ========== -->
+<!-- ======= IMÓVEIS ======= -->
 <div class="pg" id="pg-imoveis">
   <div class="toolbar">
-    <input type="text" placeholder="Buscar imóveis...">
-    <select><option>Todos os tipos</option><option>Casa</option><option>Apartamento</option><option>Comercial</option><option>Terreno</option></select>
-    <select><option>Venda e Aluguel</option><option>Venda</option><option>Aluguel</option></select>
+    <input type="text" placeholder="Buscar imóveis..." id="srch-imoveis" oninput="filtrarImoveis()">
+    <select id="flt-tipo" onchange="filtrarImoveis()"><option value="">Todos os tipos</option><option>Casa</option><option>Apartamento</option><option>Sala Comercial</option><option>Terreno</option></select>
+    <select id="flt-fin" onchange="filtrarImoveis()"><option value="">Venda e Aluguel</option><option>Venda</option><option>Aluguel</option></select>
     <button class="bs bp" onclick="sp('publicar',document.querySelector('[onclick*=publicar]'))"><i class="ti ti-plus"></i> Novo</button>
   </div>
-  <div class="imoveis-grid">
-    <div class="icard"><div class="ithumb" style="background:#e8f0fb">🏠<span class="tt tag tg">Ativo</span></div><div class="icbody"><div class="ict">Casa Jardim Atlântico</div><div class="ica"><i class="ti ti-map-pin"></i> Paulo Afonso, BA</div><div class="icp">R$ 450.000</div><div class="icd"><span>120m²</span><span>3q</span><span>2 vagas</span></div></div><div class="icact"><button class="bs bp">Ver</button><button class="bs ba">Editar</button><button class="bs bgr">Banner</button></div></div>
-    <div class="icard"><div class="ithumb" style="background:#fef3e2">🏢<span class="tt tag tb">Destaque</span></div><div class="icbody"><div class="ict">Apto 3 Quartos Centro</div><div class="ica"><i class="ti ti-map-pin"></i> Centro, BA</div><div class="icp">R$ 280.000</div><div class="icd"><span>78m²</span><span>3q</span><span>1 vaga</span></div></div><div class="icact"><button class="bs bp">Ver</button><button class="bs ba">Editar</button><button class="bs bgr">Banner</button></div></div>
-    <div class="icard"><div class="ithumb" style="background:#f3e8fb">🏪<span class="tt tag to">Aluguel</span></div><div class="icbody"><div class="ict">Sala Comercial Premium</div><div class="ica"><i class="ti ti-map-pin"></i> Setor Comercial</div><div class="icp">R$ 1.800/mês</div><div class="icd"><span>45m²</span><span>2 vagas</span></div></div><div class="icact"><button class="bs bp">Ver</button><button class="bs ba">Editar</button><button class="bs bgr">Banner</button></div></div>
-    <div class="icard"><div class="ithumb" style="background:#e8fbe8">🌿<span class="tt tag tgr">Novo</span></div><div class="icbody"><div class="ict">Terreno Zona Norte</div><div class="ica"><i class="ti ti-map-pin"></i> Zona Norte, BA</div><div class="icp">R$ 120.000</div><div class="icd"><span>360m²</span><span>Plano</span></div></div><div class="icact"><button class="bs bp">Ver</button><button class="bs ba">Editar</button><button class="bs bgr">Banner</button></div></div>
-    <div class="icard"><div class="ithumb" style="background:#fce8e8">🏘️<span class="tt tag tg">Ativo</span></div><div class="icbody"><div class="ict">Casa Condomínio Fechado</div><div class="ica"><i class="ti ti-map-pin"></i> Glória, BA</div><div class="icp">R$ 680.000</div><div class="icd"><span>200m²</span><span>4q</span><span>3 vagas</span></div></div><div class="icact"><button class="bs bp">Ver</button><button class="bs ba">Editar</button><button class="bs bgr">Banner</button></div></div>
-  </div>
+  <div class="imoveis-grid" id="lista-imoveis"><div class="loading-row" style="grid-column:1/-1"><i class="ti ti-loader-2"></i> Carregando do Firebase...</div></div>
 </div>
 
-<!-- ========== PUBLICAR ========== -->
+<!-- ======= PUBLICAR ======= -->
 <div class="pg" id="pg-publicar">
-  <div class="pnl" style="margin-bottom:13px">
-    <div class="pt"><i class="ti ti-home-plus"></i> Cadastrar Novo Imóvel</div>
+  <div class="pnl" style="margin-bottom:12px">
+    <div class="pt"><i class="ti ti-home-plus"></i> Cadastrar Imóvel no Firebase</div>
+    <div id="alert-imovel"></div>
     <div class="fgrid">
-      <div class="fg"><div class="fl">Tipo de Imóvel</div><select class="fi"><option>Casa</option><option>Apartamento</option><option>Sala Comercial</option><option>Terreno</option><option>Galpão</option></select></div>
-      <div class="fg"><div class="fl">Finalidade</div><select class="fi"><option>Venda</option><option>Aluguel</option><option>Venda e Aluguel</option></select></div>
-      <div class="fg"><div class="fl">Título do Anúncio</div><input class="fi" type="text" placeholder="Ex: Casa 3 quartos com piscina"></div>
-      <div class="fg"><div class="fl">Preço (R$)</div><input class="fi" type="text" placeholder="Ex: 450000"></div>
-      <div class="fg"><div class="fl">Área Total (m²)</div><input class="fi" type="text" placeholder="Ex: 120"></div>
-      <div class="fg"><div class="fl">Quartos</div><select class="fi"><option>1</option><option>2</option><option>3</option><option>4+</option></select></div>
-      <div class="fg"><div class="fl">Banheiros</div><select class="fi"><option>1</option><option>2</option><option>3</option><option>4+</option></select></div>
-      <div class="fg"><div class="fl">Vagas</div><select class="fi"><option>0</option><option>1</option><option>2</option><option>3+</option></select></div>
-      <div class="fg full"><div class="fl">Endereço Completo</div><input class="fi" type="text" placeholder="Rua, número, bairro, cidade, CEP"></div>
-      <div class="fg full"><div class="fl">Descrição</div><textarea class="fi" placeholder="Descreva os diferenciais do imóvel..."></textarea></div>
+      <div class="fg full"><div class="fl">Título do Anúncio</div><input class="fi" id="im-titulo" placeholder="Ex: Casa 3 quartos com piscina"></div>
+      <div class="fg"><div class="fl">Tipo</div><select class="fi" id="im-tipo"><option>Casa</option><option>Apartamento</option><option>Sala Comercial</option><option>Terreno</option><option>Galpão</option></select></div>
+      <div class="fg"><div class="fl">Finalidade</div><select class="fi" id="im-fin"><option>Venda</option><option>Aluguel</option></select></div>
+      <div class="fg"><div class="fl">Preço (R$)</div><input class="fi" id="im-preco" type="number" placeholder="450000"></div>
+      <div class="fg"><div class="fl">Área (m²)</div><input class="fi" id="im-area" type="number" placeholder="120"></div>
+      <div class="fg"><div class="fl">Quartos</div><select class="fi" id="im-quartos"><option>1</option><option>2</option><option>3</option><option>4+</option></select></div>
+      <div class="fg"><div class="fl">Vagas</div><select class="fi" id="im-vagas"><option>0</option><option>1</option><option>2</option><option>3+</option></select></div>
+      <div class="fg"><div class="fl">Cidade/UF</div><input class="fi" id="im-cidade" placeholder="Paulo Afonso, BA"></div>
+      <div class="fg"><div class="fl">Endereço</div><input class="fi" id="im-end" placeholder="Rua, número, bairro, CEP"></div>
+      <div class="fg full"><div class="fl">Descrição</div><textarea class="fi" id="im-desc" placeholder="Descreva os diferenciais do imóvel..."></textarea></div>
       <div class="fg full"><div class="fl">Características</div>
-        <div style="display:flex;flex-wrap:wrap;gap:10px;margin-top:5px;font-size:12px">
-          <label><input type="checkbox"> Piscina</label>
-          <label><input type="checkbox"> Churrasqueira</label>
-          <label><input type="checkbox"> Portão eletrônico</label>
-          <label><input type="checkbox"> Academia</label>
-          <label><input type="checkbox"> Playground</label>
-          <label><input type="checkbox"> Área verde</label>
+        <div style="display:flex;flex-wrap:wrap;gap:9px;margin-top:4px;font-size:11px">
+          <label><input type="checkbox" id="ch-piscina"> Piscina</label>
+          <label><input type="checkbox" id="ch-churrasco"> Churrasqueira</label>
+          <label><input type="checkbox" id="ch-portao"> Portão eletrônico</label>
+          <label><input type="checkbox" id="ch-academia"> Academia</label>
+          <label><input type="checkbox" id="ch-play"> Playground</label>
         </div>
       </div>
     </div>
   </div>
-  <div class="pnl" style="margin-bottom:13px">
-    <div class="pt"><i class="ti ti-photo"></i> Fotos do Imóvel</div>
+  <div class="pnl" style="margin-bottom:12px">
+    <div class="pt"><i class="ti ti-photo"></i> Fotos</div>
     <div class="upload-zone" onclick="document.getElementById('fIn').click()">
       <i class="ti ti-cloud-upload"></i>
-      <div style="font-weight:600;color:var(--tx)">Arraste fotos ou clique para selecionar</div>
-      <div>JPG, PNG, WEBP · Até 20 fotos · Máx 5MB cada</div>
+      <div style="font-weight:600;color:var(--tx)">Arraste ou clique para selecionar</div>
+      <div>JPG, PNG · Até 20 fotos</div>
     </div>
     <input type="file" id="fIn" multiple accept="image/*" style="display:none" onchange="addPhotos(this)">
-    <div class="photo-grid" id="photo-grid">
-      <div class="photo-th" style="background:#e8f0fb">🏠<button class="pdel" onclick="this.parentNode.remove()">×</button></div>
-      <div class="photo-th" style="background:#fef3e2">🛋️<button class="pdel" onclick="this.parentNode.remove()">×</button></div>
-      <div class="photo-th" style="background:#e8fbe8">🛁<button class="pdel" onclick="this.parentNode.remove()">×</button></div>
-    </div>
+    <div class="photo-grid" id="photo-grid"></div>
   </div>
-  <div style="display:flex;gap:9px;justify-content:flex-end">
-    <button class="bs bo" style="padding:7px 18px;font-size:12px">Salvar Rascunho</button>
-    <button class="bs ba" style="padding:7px 18px;font-size:12px">✨ Gerar Descrição IA</button>
-    <button class="bs bp" style="padding:7px 18px;font-size:12px"><i class="ti ti-send"></i> Publicar Imóvel</button>
+  <div style="display:flex;gap:8px;justify-content:flex-end">
+    <button class="bs bo" style="padding:7px 16px">Salvar Rascunho</button>
+    <button class="bs ba" style="padding:7px 16px">✨ Gerar Descrição IA</button>
+    <button class="bs bp" style="padding:7px 16px" id="btn-pub" onclick="salvarImovel()"><i class="ti ti-device-floppy"></i> Salvar no Firebase</button>
   </div>
 </div>
 
-<!-- ========== CRM ========== -->
+<!-- ======= CRM ======= -->
 <div class="pg" id="pg-crm">
-  <div class="kanban">
-    <div class="kcol"><div class="kh n">Novos Leads <span>3</span></div><div class="kbody">
-      <div class="lcard"><div class="lc-n">João Carlos</div><div class="lc-i">Casa 3q – Jd. Atlântico</div><div class="lc-f"><span style="font-weight:600;font-size:11px">R$450k</span><button class="wa-btn"><i class="ti ti-brand-whatsapp" style="font-size:11px"></i> Chat</button></div></div>
-      <div class="lcard"><div class="lc-n">Ana Beatriz</div><div class="lc-i">Terreno – Zona Norte</div><div class="lc-f"><span style="font-weight:600;font-size:11px">R$120k</span><button class="wa-btn"><i class="ti ti-brand-whatsapp" style="font-size:11px"></i> Chat</button></div></div>
-    </div></div>
-    <div class="kcol"><div class="kh c">Em Contato <span>4</span></div><div class="kbody">
-      <div class="lcard"><div class="lc-n">Lúcia Ferreira</div><div class="lc-i">Apto Centro – 3q</div><div class="lc-f"><span style="font-weight:600;font-size:11px">R$280k</span><button class="wa-btn"><i class="ti ti-brand-whatsapp" style="font-size:11px"></i> Chat</button></div></div>
-      <div class="lcard"><div class="lc-n">Roberto Lima</div><div class="lc-i">Sala Comercial</div><div class="lc-f"><span style="font-weight:600;font-size:11px">R$1.800/m</span><button class="wa-btn"><i class="ti ti-brand-whatsapp" style="font-size:11px"></i> Chat</button></div></div>
-    </div></div>
-    <div class="kcol"><div class="kh v">Visita Agendada <span>2</span></div><div class="kbody">
-      <div class="lcard"><div class="lc-n">Maria Silva</div><div class="lc-i">Apto Centro · 15/jun</div><div class="lc-f"><span style="font-weight:600;font-size:11px">R$280k</span><button class="wa-btn"><i class="ti ti-brand-whatsapp" style="font-size:11px"></i> Chat</button></div></div>
-    </div></div>
-    <div class="kcol"><div class="kh p">Proposta <span>2</span></div><div class="kbody">
-      <div class="lcard"><div class="lc-n">Pedro Rocha</div><div class="lc-i">Sala Comercial</div><div class="lc-f"><span style="font-weight:600;font-size:11px">R$1.750/m</span><button class="wa-btn"><i class="ti ti-brand-whatsapp" style="font-size:11px"></i> Chat</button></div></div>
-    </div></div>
-    <div class="kcol"><div class="kh f">Fechado 🎉 <span>1</span></div><div class="kbody">
-      <div class="lcard"><div class="lc-n">Carlos Melo</div><div class="lc-i">Casa Jd. Atlântico ✅</div><div class="lc-f"><span style="font-weight:600;font-size:11px">R$440k</span><span style="font-size:10px;color:#2ecc71">Concluído</span></div></div>
-    </div></div>
-  </div>
-  <div class="pnl" style="margin-top:13px">
-    <div class="pt"><i class="ti ti-robot"></i> Ações Rápidas IA</div>
-    <div style="display:flex;gap:8px;flex-wrap:wrap">
-      <button class="bs bp">Script de Abordagem ↗</button>
-      <button class="bs ba">Modelo de Proposta ↗</button>
-      <button class="bs bgr">Follow-up Automático ↗</button>
+  <div class="pnl" style="margin-bottom:12px">
+    <div class="pt"><i class="ti ti-user-plus"></i> Cadastrar Lead</div>
+    <div id="alert-lead"></div>
+    <div class="fgrid">
+      <div class="fg full"><div class="fl">Nome completo</div><input class="fi" id="ld-nome" placeholder="João da Silva"></div>
+      <div class="fg"><div class="fl">WhatsApp</div><input class="fi" id="ld-fone" placeholder="(75) 99999-9999"></div>
+      <div class="fg"><div class="fl">E-mail</div><input class="fi" id="ld-email" placeholder="joao@email.com"></div>
+      <div class="fg"><div class="fl">Interesse</div><select class="fi" id="ld-int"><option>Comprar</option><option>Alugar</option><option>Vender</option></select></div>
+      <div class="fg"><div class="fl">Orçamento (R$)</div><input class="fi" id="ld-orc" type="number" placeholder="300000"></div>
+      <div class="fg"><div class="fl">Status</div><select class="fi" id="ld-status"><option>Novo</option><option>Em Contato</option><option>Visita Agendada</option><option>Proposta</option><option>Fechado</option></select></div>
+      <div class="fg full"><div class="fl">Observação</div><input class="fi" id="ld-obs" placeholder="Detalhes..."></div>
     </div>
+    <button class="bs bp" style="margin-top:10px" id="btn-lead" onclick="salvarLead()"><i class="ti ti-device-floppy"></i> Salvar Lead no Firebase</button>
+  </div>
+  <div class="kanban" id="kanban-leads">
+    <div class="kcol"><div class="kh n">Novos <span id="k-novo">0</span></div><div class="kbody" id="k-novo-body"><div class="empty-state"><i class="ti ti-loader-2"></i></div></div></div>
+    <div class="kcol"><div class="kh c">Em Contato <span id="k-cont">0</span></div><div class="kbody" id="k-cont-body"></div></div>
+    <div class="kcol"><div class="kh v">Visita <span id="k-vis">0</span></div><div class="kbody" id="k-vis-body"></div></div>
+    <div class="kcol"><div class="kh p">Proposta <span id="k-prop">0</span></div><div class="kbody" id="k-prop-body"></div></div>
+    <div class="kcol"><div class="kh f">Fechado <span id="k-fech">0</span></div><div class="kbody" id="k-fech-body"></div></div>
   </div>
 </div>
 
-<!-- ========== WHATSAPP ========== -->
+<!-- ======= WHATSAPP ======= -->
 <div class="pg" id="pg-whatsapp">
   <div class="g2">
     <div class="pnl">
       <div class="pt"><i class="ti ti-brand-whatsapp"></i> Disparar Mensagem</div>
-      <div class="fg" style="margin-bottom:8px"><div class="fl">Imóvel</div><select class="fi"><option>Casa Jardim Atlântico — R$450.000</option><option>Apto 3q Centro — R$280.000</option></select></div>
       <div class="fg" style="margin-bottom:8px"><div class="fl">Template</div>
         <div style="display:flex;gap:5px;flex-wrap:wrap;margin-top:3px">
           <button class="bs blo" onclick="setWA('interesse')">Interesse</button>
@@ -397,78 +323,56 @@ textarea.fi{resize:vertical;min-height:70px}
       </div>
       <div class="fg" style="margin-bottom:8px"><div class="fl">Mensagem</div><textarea class="fi" id="wa-msg" style="height:90px">Olá! Temos um imóvel perfeito para você 🏠
 
-*Casa Jardim Atlântico*
-✅ 3 quartos | 120m² | Piscina
-💰 R$ 450.000
-📍 Paulo Afonso, BA
-
 Posso agendar uma visita?</textarea></div>
-      <div class="wa-prev">
-        <div class="wa-bubble"><b>ImóPro</b>Olá! Temos um imóvel perfeito para você 🏠<br><br><b>Casa Jardim Atlântico</b><br>✅ 3 quartos | 120m² | Piscina<br>💰 R$ 450.000<div class="wa-time">14:32 ✓✓</div></div>
+      <div style="background:#e5ddd5;border-radius:8px;padding:11px;margin-top:8px">
+        <div style="background:#dcf8c6;border-radius:10px 10px 0 10px;padding:8px 11px;font-size:11px;display:inline-block;max-width:88%">
+          <b style="display:block;font-size:12px;color:#075e54;margin-bottom:2px">ImóPro</b>
+          Olá! Temos um imóvel perfeito para você 🏠
+          <div style="font-size:9px;color:#888;text-align:right;margin-top:2px">14:32 ✓✓</div>
+        </div>
       </div>
-      <div style="display:flex;gap:7px;margin-top:9px;flex-wrap:wrap">
-        <button class="bs ba">✍️ Gerar templates IA ↗</button>
-        <button class="bs bgr"><i class="ti ti-brand-whatsapp"></i> Enviar selecionados</button>
+      <div style="display:flex;gap:7px;margin-top:9px">
+        <button class="bs bgr"><i class="ti ti-brand-whatsapp"></i> Enviar para selecionados</button>
       </div>
     </div>
     <div class="pnl">
-      <div class="pt"><i class="ti ti-users"></i> Selecionar Contatos</div>
-      <div class="toolbar" style="margin-bottom:8px">
-        <input type="text" placeholder="Buscar contato...">
-        <select><option>Todos os leads</option><option>Clientes ativos</option><option>Visitaram imóvel</option></select>
-      </div>
-      <div class="contacts-list">
-        <div class="cr"><input type="checkbox" checked><div class="av avb" style="width:24px;height:24px;font-size:9px">JC</div><div style="flex:1"><div style="font-weight:600">João Carlos</div><div style="font-size:11px;color:var(--mu)">(75) 99999-1234</div></div><span class="tag tg">Novo</span></div>
-        <div class="cr"><input type="checkbox" checked><div class="av ava" style="width:24px;height:24px;font-size:9px">MS</div><div style="flex:1"><div style="font-weight:600">Maria Silva</div><div style="font-size:11px;color:var(--mu)">(75) 99999-5678</div></div><span class="tag to">Visita</span></div>
-        <div class="cr"><input type="checkbox"><div class="av avg" style="width:24px;height:24px;font-size:9px">PR</div><div style="flex:1"><div style="font-weight:600">Pedro Rocha</div><div style="font-size:11px;color:var(--mu)">(75) 99999-9012</div></div><span class="tag tb">Proposta</span></div>
-        <div class="cr"><input type="checkbox"><div class="av avb" style="width:24px;height:24px;font-size:9px">LF</div><div style="flex:1"><div style="font-weight:600">Lúcia Ferreira</div><div style="font-size:11px;color:var(--mu)">(75) 99999-3456</div></div><span class="tag tgr">Contato</span></div>
-      </div>
-      <div style="font-size:11px;color:var(--mu);margin-top:8px;text-align:right">2 contatos selecionados</div>
+      <div class="pt"><i class="ti ti-users"></i> Leads (do Firebase)</div>
+      <div id="wa-leads"><div class="loading-row">Carregando leads...</div></div>
     </div>
   </div>
 </div>
 
-<!-- ========== REGULAÇÃO ========== -->
+<!-- ======= REGULAÇÃO ======= -->
 <div class="pg" id="pg-regulacao">
   <div class="g2">
     <div class="pnl">
-      <div class="pt"><i class="ti ti-file-search"></i> Processo — Casa Jd. Atlântico</div>
-      <div class="reg-step"><div class="snum sdn"><i class="ti ti-check"></i></div><div><div style="font-weight:600">Documentação do Vendedor</div><div style="font-size:11px;color:var(--mu)">Concluído em 10/05/2026</div></div></div>
-      <div class="reg-step"><div class="snum sdn"><i class="ti ti-check"></i></div><div><div style="font-weight:600">Matrícula do Imóvel</div><div style="font-size:11px;color:var(--mu)">Concluído em 14/05/2026</div></div></div>
-      <div class="reg-step"><div class="snum sac">3</div><div><div style="font-weight:600">Certidões Negativas</div><div style="font-size:11px;color:var(--mu)">Em andamento · Prazo 05/06/2026</div><div style="display:flex;gap:5px;margin-top:6px"><button class="bs ba">Upload</button><button class="bs bo">Ver checklist ↗</button></div></div></div>
+      <div class="pt"><i class="ti ti-file-search"></i> Processo de Regulação</div>
+      <div class="reg-step"><div class="snum sdn"><i class="ti ti-check"></i></div><div><div style="font-weight:600">Documentação do Vendedor</div><div style="font-size:11px;color:var(--mu)">RG, CPF, estado civil · Concluído</div></div></div>
+      <div class="reg-step"><div class="snum sdn"><i class="ti ti-check"></i></div><div><div style="font-weight:600">Matrícula do Imóvel</div><div style="font-size:11px;color:var(--mu)">Certidão atualizada · Concluído</div></div></div>
+      <div class="reg-step"><div class="snum sac">3</div><div><div style="font-weight:600">Certidões Negativas</div><div style="font-size:11px;color:var(--mu)">Municipal, Federal, Trabalhista · Em andamento</div><div style="display:flex;gap:5px;margin-top:5px"><button class="bs ba">Upload</button><button class="bs bo">Checklist ↗</button></div></div></div>
       <div class="reg-step"><div class="snum spd">4</div><div><div style="font-weight:600">Escritura Pública</div><div style="font-size:11px;color:var(--mu)">Aguardando etapa anterior</div></div></div>
-      <div class="reg-step"><div class="snum spd">5</div><div><div style="font-weight:600">Registro da Escritura</div><div style="font-size:11px;color:var(--mu)">Aguardando escritura</div></div></div>
-      <div class="reg-step"><div class="snum spd">6</div><div><div style="font-weight:600">ITBI e Pagamentos</div><div style="font-size:11px;color:var(--mu)">Cálculo e pagamento do imposto</div></div></div>
+      <div class="reg-step"><div class="snum spd">5</div><div><div style="font-weight:600">ITBI e Registro</div><div style="font-size:11px;color:var(--mu)">Aguardando escritura</div></div></div>
     </div>
-    <div>
-      <div class="pnl" style="margin-bottom:13px">
-        <div class="pt"><i class="ti ti-robot"></i> Assistente Despachante IA</div>
-        <div style="display:flex;flex-direction:column;gap:6px">
-          <button class="bs bp" style="text-align:left">📋 Documentos para transferência ↗</button>
-          <button class="bs ba" style="text-align:left">💰 Calcular ITBI ↗</button>
-          <button class="bs bgr" style="text-align:left">⚖️ Inventário e Partilha ↗</button>
-          <button class="bs bo" style="text-align:left">✅ Regularização sem escritura ↗</button>
-        </div>
-      </div>
-      <div class="pnl">
-        <div class="pt"><i class="ti ti-file-invoice"></i> Documentos</div>
-        <div class="row"><i class="ti ti-file-check" style="color:#2ecc71"></i><span style="flex:1">Matrícula do Imóvel</span><span class="tag tg">OK</span></div>
-        <div class="row"><i class="ti ti-file-check" style="color:#2ecc71"></i><span style="flex:1">Docs. Vendedor</span><span class="tag tg">OK</span></div>
-        <div class="row"><i class="ti ti-file-upload" style="color:var(--acc)"></i><span style="flex:1">Certidão Negativa</span><span class="tag to">Pendente</span></div>
-        <div class="row"><i class="ti ti-file-x" style="color:#e74c3c"></i><span style="flex:1">ITBI</span><span class="tag tgr">Aguardando</span></div>
+    <div class="pnl">
+      <div class="pt"><i class="ti ti-robot"></i> Assistente Despachante IA</div>
+      <div style="display:flex;flex-direction:column;gap:6px">
+        <button class="bs bp" style="text-align:left">📋 Documentos necessários ↗</button>
+        <button class="bs ba" style="text-align:left">💰 Calcular ITBI ↗</button>
+        <button class="bs bgr" style="text-align:left">⚖️ Inventário e Partilha ↗</button>
+        <button class="bs bo" style="text-align:left">✅ Regularização sem escritura ↗</button>
       </div>
     </div>
   </div>
 </div>
 
-<!-- ========== MARKETING ========== -->
+<!-- ======= MARKETING ======= -->
 <div class="pg" id="pg-marketing">
   <div class="g2">
     <div class="pnl">
       <div class="pt"><i class="ti ti-palette"></i> Gerador de Banner</div>
-      <div class="fgrid" style="margin-bottom:11px">
-        <div class="fg"><div class="fl">Imóvel</div><select class="fi" id="ban-imovel" onchange="updateBanner()"><option>Casa Jardim Atlântico</option><option>Apto 3q Centro</option><option>Sala Comercial</option><option>Terreno Zona Norte</option></select></div>
-        <div class="fg"><div class="fl">Formato</div><select class="fi"><option>Instagram (1:1)</option><option>Story (9:16)</option><option>Banner Web</option><option>WhatsApp</option></select></div>
+      <div class="fgrid" style="margin-bottom:10px">
+        <div class="fg"><div class="fl">Imóvel</div><select class="fi" id="ban-imovel" onchange="updateBanner()"><option>Casa Jardim Atlântico</option><option>Apto 3q Centro</option><option>Sala Comercial</option></select></div>
+        <div class="fg"><div class="fl">Formato</div><select class="fi"><option>Instagram (1:1)</option><option>Story (9:16)</option><option>WhatsApp</option></select></div>
         <div class="fg full"><div class="fl">Slogan</div><input class="fi" id="ban-sl" value="Seu lar dos sonhos!" oninput="updateBanner()"></div>
         <div class="fg full"><div class="fl">Template</div>
           <div class="tpl-grid">
@@ -479,344 +383,199 @@ Posso agendar uma visita?</textarea></div>
         </div>
       </div>
       <div class="banner-prev" id="banner-prev">
-        <div style="font-size:10px;opacity:.6;text-transform:uppercase;letter-spacing:2px">ImóPro · Paulo Afonso, BA</div>
-        <div class="ban-title" id="ban-title">Casa Jardim Atlântico</div>
-        <div class="ban-sub" id="ban-sub">3 quartos · 120m² · Piscina</div>
-        <div class="ban-price" id="ban-price">R$ 450.000</div>
-        <div class="ban-sub" id="ban-sltxt">Seu lar dos sonhos!</div>
-        <div style="display:flex;gap:8px;margin-top:6px;font-size:11px"><span>📱 (75) 9 9999-9999</span><span>🌐 imopro.com.br</span></div>
+        <div style="font-size:9px;opacity:.6;text-transform:uppercase;letter-spacing:2px">ImóPro · Paulo Afonso, BA</div>
+        <div style="font-size:18px;font-weight:700" id="ban-title">Casa Jardim Atlântico</div>
+        <div style="font-size:11px;opacity:.85" id="ban-sub">3 quartos · 120m² · Piscina</div>
+        <div style="font-size:22px;font-weight:800;color:var(--acc)" id="ban-price">R$ 450.000</div>
+        <div style="font-size:11px;opacity:.85" id="ban-sltxt">Seu lar dos sonhos!</div>
         <button class="ban-cta">Quero Conhecer</button>
       </div>
-      <div style="display:flex;gap:7px;margin-top:10px">
-        <button class="bs bp" style="flex:1">✍️ Gerar Copywriting IA ↗</button>
-        <button class="bs ba" style="flex:1"><i class="ti ti-download"></i> Baixar Banner</button>
+      <div style="display:flex;gap:7px;margin-top:9px">
+        <button class="bs bp" style="flex:1">✍️ Copywriting IA ↗</button>
+        <button class="bs ba" style="flex:1"><i class="ti ti-download"></i> Baixar</button>
       </div>
     </div>
     <div class="pnl">
-      <div class="pt"><i class="ti ti-brand-instagram"></i> Campanhas de Marketing</div>
-      <div style="display:flex;flex-direction:column;gap:7px;margin-bottom:13px">
-        <div style="display:flex;align-items:center;gap:9px;padding:9px 11px;border-radius:8px;border:1px solid var(--bd);background:#fafafa">
-          <span style="font-size:20px">📸</span><div style="flex:1"><div style="font-weight:600">Instagram & Facebook</div><div style="font-size:11px;color:var(--mu)">Posts, stories e reels automáticos</div></div><button class="bs ba">Criar Post ↗</button>
-        </div>
-        <div style="display:flex;align-items:center;gap:9px;padding:9px 11px;border-radius:8px;border:1px solid var(--bd);background:#fafafa">
-          <span style="font-size:20px">💬</span><div style="flex:1"><div style="font-weight:600">WhatsApp Marketing</div><div style="font-size:11px;color:var(--mu)">Disparo em massa segmentado</div></div><button class="bs bgr" onclick="sp('whatsapp',document.querySelector('[onclick*=whatsapp]'))">Disparar</button>
-        </div>
-        <div style="display:flex;align-items:center;gap:9px;padding:9px 11px;border-radius:8px;border:1px solid var(--bd);background:#fafafa">
-          <span style="font-size:20px">🏠</span><div style="flex:1"><div style="font-weight:600">OLX & Zap Imóveis</div><div style="font-size:11px;color:var(--mu)">Publicação automática nos portais</div></div><button class="bs bp">Publicar ↗</button>
-        </div>
-        <div style="display:flex;align-items:center;gap:9px;padding:9px 11px;border-radius:8px;border:1px solid var(--bd);background:#fafafa">
-          <span style="font-size:20px">📧</span><div style="flex:1"><div style="font-weight:600">E-mail Marketing</div><div style="font-size:11px;color:var(--mu)">Newsletter para base de clientes</div></div><button class="bs bo">Criar E-mail ↗</button>
-        </div>
+      <div class="pt"><i class="ti ti-brand-instagram"></i> Campanhas</div>
+      <div style="display:flex;flex-direction:column;gap:7px">
+        <div style="display:flex;align-items:center;gap:8px;padding:8px 10px;border-radius:7px;border:1px solid var(--bd)"><span style="font-size:18px">📸</span><div style="flex:1"><div style="font-weight:600;font-size:11px">Instagram & Facebook</div><div style="font-size:10px;color:var(--mu)">Posts e stories automáticos</div></div><button class="bs ba">Criar ↗</button></div>
+        <div style="display:flex;align-items:center;gap:8px;padding:8px 10px;border-radius:7px;border:1px solid var(--bd)"><span style="font-size:18px">💬</span><div style="flex:1"><div style="font-weight:600;font-size:11px">WhatsApp Marketing</div><div style="font-size:10px;color:var(--mu)">Disparo em massa</div></div><button class="bs bgr">Disparar</button></div>
+        <div style="display:flex;align-items:center;gap:8px;padding:8px 10px;border-radius:7px;border:1px solid var(--bd)"><span style="font-size:18px">🏠</span><div style="flex:1"><div style="font-weight:600;font-size:11px">OLX & Zap Imóveis</div><div style="font-size:10px;color:var(--mu)">Publicação automática</div></div><button class="bs bp">Publicar ↗</button></div>
       </div>
-      <div class="pt"><i class="ti ti-chart-bar"></i> Campanhas Ativas</div>
-      <div class="row"><span style="flex:1">Instagram — Casa 3q</span><span style="color:#2ecc71">↑ 248 alcance</span><span style="color:var(--mu);margin-left:8px">2 dias</span></div>
-      <div class="row"><span style="flex:1">WA — Lançamento Terreno</span><span style="color:var(--acc)">47 envios</span><span style="color:var(--mu);margin-left:8px">1 dia</span></div>
-      <div class="row"><span style="flex:1">OLX — Apto Centro</span><span style="color:#2ecc71">↑ 91 cliques</span><span style="color:var(--mu);margin-left:8px">5 dias</span></div>
     </div>
   </div>
 </div>
 
-<!-- ========== DASHBOARD LOCAÇÃO ========== -->
+<!-- ======= DASHBOARD LOCAÇÃO ======= -->
 <div class="pg" id="pg-loc-dash">
   <div class="metrics">
-    <div class="mc"><div class="ml">Contratos Ativos</div><div class="mv">8</div><div class="mch up">↑ 2 novos (mês)</div></div>
-    <div class="mc"><div class="ml">Receita Aluguel/mês</div><div class="mv" style="font-size:15px">R$14.600</div><div class="mch up">↑ R$1.200</div></div>
-    <div class="mc"><div class="ml">Repasses Pendentes</div><div class="mv">3</div><div class="mch dn">R$7.800 a repassar</div></div>
-    <div class="mc"><div class="ml">Inadimplência</div><div class="mv">1</div><div class="mch dn">1 boleto vencido</div></div>
+    <div class="mc"><div class="ml">Contratos Ativos</div><div class="mv" id="ld-ct">—</div><div class="mch up">Firebase</div></div>
+    <div class="mc"><div class="ml">Cobranças Pendentes</div><div class="mv" id="ld-cb">—</div><div class="mch dn">a vencer</div></div>
+    <div class="mc"><div class="ml">Receita/mês estimada</div><div class="mv" id="ld-rec" style="font-size:14px">—</div><div class="mch nu">contratos ativos</div></div>
+    <div class="mc"><div class="ml">Leads Locação</div><div class="mv" id="ld-ll">—</div><div class="mch up">Firebase</div></div>
   </div>
   <div class="g2">
-    <div class="pnl">
-      <div class="pt" style="color:var(--loc-acc)"><i class="ti ti-file-text"></i> Contratos Ativos</div>
-      <div class="row"><div class="av avb">MS</div><div style="flex:1"><div style="font-weight:600">Maria Silva</div><div style="color:var(--mu)">Apto 3q Centro · R$1.800/mês</div></div><span class="tag tg">Em dia</span></div>
-      <div class="row"><div class="av ava">JC</div><div style="flex:1"><div style="font-weight:600">João Carlos</div><div style="color:var(--mu)">Casa Jd. Atlântico · R$2.200/mês</div></div><span class="tag tg">Em dia</span></div>
-      <div class="row"><div class="av avr">PR</div><div style="flex:1"><div style="font-weight:600">Pedro Rocha</div><div style="color:var(--mu)">Sala Comercial · R$1.500/mês</div></div><span class="tag tr">Inadimplente</span></div>
-      <div class="row"><div class="av avb">LF</div><div style="flex:1"><div style="font-weight:600">Lúcia Ferreira</div><div style="color:var(--mu)">Casa Cond. · R$3.200/mês</div></div><span class="tag to">Vence hoje</span></div>
-    </div>
-    <div class="pnl">
-      <div class="pt"><i class="ti ti-arrows-split"></i> Próximos Repasses</div>
-      <div class="row"><div style="flex:1"><div style="font-weight:600">Proprietário A. Costa</div><div style="color:var(--mu)">Apto Centro · vence 05/06</div></div><div><div style="font-weight:600;font-size:12px">R$1.620</div><div style="font-size:10px;color:var(--mu)">líquido</div></div><button class="bs bla" style="margin-left:7px">Repassar</button></div>
-      <div class="row"><div style="flex:1"><div style="font-weight:600">Proprietário B. Lima</div><div style="color:var(--mu)">Casa Jd. Atl. · vence 07/06</div></div><div><div style="font-weight:600;font-size:12px">R$1.980</div></div><button class="bs blo" style="margin-left:7px">Repassar</button></div>
-      <div class="row"><div style="flex:1"><div style="font-weight:600">Proprietário C. Melo</div><div style="color:var(--mu)">Casa Cond. · vence 10/06</div></div><div><div style="font-weight:600;font-size:12px">R$2.880</div></div><button class="bs bo" style="margin-left:7px">Agendar</button></div>
-    </div>
-  </div>
-  <div class="pnl">
-    <div class="pt"><i class="ti ti-arrows-split"></i> Split financeiro do mês · Total: R$14.600</div>
-    <div style="font-size:12px">
-      <div style="display:flex;justify-content:space-between;margin-bottom:3px"><span>Repasse proprietários (90%)</span><span style="font-weight:600">R$13.140</span></div>
-      <div class="sbar"><div class="sfill" style="width:90%;background:var(--loc)"></div></div>
-      <div style="display:flex;justify-content:space-between;margin:8px 0 3px"><span>Comissão imobiliária (10%)</span><span style="font-weight:600;color:var(--loc-acc)">R$1.460</span></div>
-      <div class="sbar"><div class="sfill" style="width:10%;background:var(--loc-acc)"></div></div>
-    </div>
+    <div class="pnl"><div class="pt"><i class="ti ti-file-text"></i> Contratos Recentes</div><div id="ld-contratos-list"><div class="loading-row">Carregando...</div></div></div>
+    <div class="pnl"><div class="pt"><i class="ti ti-credit-card"></i> Cobranças Recentes</div><div id="ld-cobr-list"><div class="loading-row">Carregando...</div></div></div>
   </div>
 </div>
 
-<!-- ========== CONTRATOS ========== -->
+<!-- ======= CONTRATOS ======= -->
 <div class="pg" id="pg-contratos">
-  <div style="display:flex;gap:8px;margin-bottom:13px;flex-wrap:wrap">
-    <input class="fi" style="flex:1;min-width:160px" type="text" placeholder="Buscar locatário ou contrato...">
-    <select class="fi"><option>Todos</option><option>Ativos</option><option>Vencendo</option><option>Inadimplentes</option></select>
-    <button class="bs bla">+ Novo Contrato</button>
-    <button class="bs bi">Gerar Modelo IA ↗</button>
-  </div>
-  <div class="pc-wrap">
-    <div class="pc-h"><div><div style="font-weight:600">Maria Silva — Contrato #001/2024</div><div style="font-size:11px;opacity:.8">Apto 3 Quartos Centro</div></div><span class="tag tg">Ativo</span></div>
-    <div class="pc-b">
-      <div class="fgrid" style="font-size:12px;gap:8px">
-        <div><span style="color:var(--mu)">Aluguel:</span> <b>R$1.800/mês</b></div>
-        <div><span style="color:var(--mu)">Vigência:</span> 01/07/2024–30/06/2026</div>
-        <div><span style="color:var(--mu)">Reajuste:</span> IGPM anual</div>
-        <div><span style="color:var(--mu)">Garantia:</span> Caução 2 meses</div>
-      </div>
-      <div style="display:flex;gap:6px;margin-top:10px;flex-wrap:wrap">
-        <button class="bs blo">Ver contrato</button>
-        <button class="bs bla">Simular reajuste ↗</button>
-        <button class="bs bi">Renovar</button>
-        <button class="bs bo">Rescindir</button>
-      </div>
+  <div class="pnl" style="margin-bottom:12px">
+    <div class="pt"><i class="ti ti-file-plus"></i> Novo Contrato — Firebase</div>
+    <div id="alert-ct"></div>
+    <div class="fgrid">
+      <div class="fg full"><div class="fl">Locatário</div><input class="fi" id="ct-loc" placeholder="Nome do locatário"></div>
+      <div class="fg full"><div class="fl">Imóvel</div><input class="fi" id="ct-im" placeholder="Endereço/descrição do imóvel"></div>
+      <div class="fg"><div class="fl">Valor Aluguel (R$)</div><input class="fi" id="ct-val" type="number" placeholder="1800"></div>
+      <div class="fg"><div class="fl">Vencimento (dia)</div><input class="fi" id="ct-vd" type="number" placeholder="5" min="1" max="28"></div>
+      <div class="fg"><div class="fl">Início</div><input class="fi" id="ct-ini" type="date"></div>
+      <div class="fg"><div class="fl">Término</div><input class="fi" id="ct-fim" type="date"></div>
+      <div class="fg"><div class="fl">Proprietário</div><input class="fi" id="ct-prop" placeholder="Nome do proprietário"></div>
+      <div class="fg"><div class="fl">Garantia</div><select class="fi" id="ct-gar"><option>Caução</option><option>Fiador</option><option>Seguro fiança</option></select></div>
     </div>
+    <button class="bs bp" style="margin-top:10px" id="btn-ct" onclick="salvarContrato()"><i class="ti ti-device-floppy"></i> Salvar Contrato no Firebase</button>
   </div>
-  <div class="pc-wrap">
-    <div class="pc-h" style="background:#a32d2d"><div><div style="font-weight:600">Pedro Rocha — Contrato #003/2024</div><div style="font-size:11px;opacity:.8">Sala Comercial</div></div><span class="tag tr">Inadimplente</span></div>
-    <div class="pc-b">
-      <div class="fgrid" style="font-size:12px;gap:8px">
-        <div><span style="color:var(--mu)">Aluguel:</span> <b>R$1.500/mês</b></div>
-        <div><span style="color:var(--mu)">Atraso:</span> 3 dias (venceu 28/05)</div>
-        <div><span style="color:var(--mu)">Multa 2%:</span> R$30,00</div>
-        <div><span style="color:var(--mu)">Total atualizado:</span> <b style="color:#a32d2d">R$1.533,75</b></div>
-      </div>
-      <div style="display:flex;gap:6px;margin-top:10px;flex-wrap:wrap">
-        <button class="bs bw">Notificar WhatsApp</button>
-        <button class="bs blo">2ª via boleto</button>
-        <button class="bs bo">Notificação extrajudicial ↗</button>
-      </div>
-    </div>
-  </div>
+  <div class="pnl"><div class="pt"><i class="ti ti-file-text"></i> Contratos Cadastrados</div><div id="lista-contratos"><div class="loading-row">Carregando...</div></div></div>
 </div>
 
-<!-- ========== COBRANÇAS ========== -->
+<!-- ======= COBRANÇAS ======= -->
 <div class="pg" id="pg-cobr">
   <div class="g2">
     <div class="pnl">
-      <div class="pt"><i class="ti ti-credit-card"></i> Emitir Cobrança</div>
-      <div class="fgrid" style="gap:9px;margin-bottom:10px">
-        <div class="fg"><div class="fl">Locatário</div><select class="fi"><option>Maria Silva</option><option>João Carlos</option><option>Pedro Rocha</option></select></div>
-        <div class="fg"><div class="fl">Competência</div><input class="fi" type="month" value="2026-06"></div>
-        <div class="fg"><div class="fl">Aluguel (R$)</div><input class="fi" value="1.800,00"></div>
-        <div class="fg"><div class="fl">Encargos (R$)</div><input class="fi" value="0,00"></div>
-        <div class="fg full"><div class="fl">Vencimento</div><input class="fi" type="date" value="2026-06-05"></div>
+      <div class="pt"><i class="ti ti-credit-card"></i> Emitir Cobrança — Firebase</div>
+      <div id="alert-cb"></div>
+      <div class="fgrid">
+        <div class="fg full"><div class="fl">Locatário</div><input class="fi" id="cb-loc" placeholder="Nome do locatário"></div>
+        <div class="fg"><div class="fl">Valor (R$)</div><input class="fi" id="cb-val" type="number" placeholder="1800"></div>
+        <div class="fg"><div class="fl">Competência</div><input class="fi" id="cb-comp" type="month"></div>
+        <div class="fg"><div class="fl">Vencimento</div><input class="fi" id="cb-venc" type="date"></div>
+        <div class="fg"><div class="fl">Status</div><select class="fi" id="cb-st"><option>Pendente</option><option>Pago</option><option>Atrasado</option><option>A vencer</option></select></div>
+        <div class="fg"><div class="fl">Forma</div><select class="fi" id="cb-forma"><option>Boleto</option><option>PIX</option><option>Transferência</option></select></div>
       </div>
-      <div style="background:#f8fafc;border-radius:8px;padding:10px;font-size:12px;border:1px solid var(--bd);margin-bottom:10px">
-        <div style="display:flex;justify-content:space-between"><span style="color:var(--mu)">Aluguel</span><span>R$1.800,00</span></div>
-        <div style="display:flex;justify-content:space-between"><span style="color:var(--mu)">Encargos</span><span>R$0,00</span></div>
-        <div class="hr"></div>
-        <div style="display:flex;justify-content:space-between;font-weight:700;font-size:13px"><span>Total</span><span>R$1.800,00</span></div>
-      </div>
-      <div style="display:flex;gap:6px;flex-wrap:wrap">
-        <button class="bs blo">Emitir Boleto</button>
-        <button class="bs bla">Gerar PIX</button>
-        <button class="bs bw">Enviar WhatsApp</button>
-        <button class="bs bo">Enviar E-mail</button>
-      </div>
+      <button class="bs bp" style="margin-top:10px" id="btn-cb" onclick="salvarCobranca()"><i class="ti ti-device-floppy"></i> Salvar Cobrança no Firebase</button>
     </div>
-    <div class="pnl">
-      <div class="pt"><i class="ti ti-list-check"></i> Cobranças Junho/2026</div>
-      <div class="row"><div style="flex:1"><div style="font-weight:600">Maria Silva</div><div style="color:var(--mu)">Apto 3q · vence 05/06</div></div><span style="font-weight:600">R$1.800</span><span class="tag tg" style="margin-left:6px">Pago</span></div>
-      <div class="row"><div style="flex:1"><div style="font-weight:600">João Carlos</div><div style="color:var(--mu)">Casa · vence 05/06</div></div><span style="font-weight:600">R$2.200</span><span class="tag to" style="margin-left:6px">Pendente</span></div>
-      <div class="row"><div style="flex:1"><div style="font-weight:600">Pedro Rocha</div><div style="color:var(--mu)">Sala · venceu 28/05</div></div><span style="font-weight:600">R$1.533</span><span class="tag tr" style="margin-left:6px">Atrasado</span></div>
-      <div class="row"><div style="flex:1"><div style="font-weight:600">Lúcia Ferreira</div><div style="color:var(--mu)">Casa Cond. · vence 10/06</div></div><span style="font-weight:600">R$3.200</span><span class="tag tb" style="margin-left:6px">A vencer</span></div>
-      <div style="display:flex;gap:6px;margin-top:10px;flex-wrap:wrap">
-        <button class="bs bi">Calcular multa/juros ↗</button>
-        <button class="bs bla">Emitir todas pendentes</button>
-      </div>
-    </div>
+    <div class="pnl"><div class="pt"><i class="ti ti-list-check"></i> Cobranças Cadastradas</div><div id="lista-cobr"><div class="loading-row">Carregando...</div></div></div>
   </div>
 </div>
 
-<!-- ========== SPLIT ========== -->
+<!-- ======= SPLIT ======= -->
 <div class="pg" id="pg-split">
-  <div class="pnl" style="margin-bottom:13px">
-    <div class="pt"><i class="ti ti-arrows-split"></i> Configuração de Split por Contrato</div>
+  <div class="pnl" style="margin-bottom:12px">
+    <div class="pt"><i class="ti ti-arrows-split"></i> Configuração de Split</div>
     <div class="fgrid" style="margin-bottom:10px">
-      <div class="fg"><div class="fl">Contrato</div><select class="fi"><option>Maria Silva — Apto 3q</option><option>João Carlos — Casa</option><option>Pedro Rocha — Sala</option></select></div>
-      <div class="fg"><div class="fl">Aluguel bruto (R$)</div><input class="fi" value="1.800,00"></div>
+      <div class="fg"><div class="fl">Contrato</div><select class="fi" id="sp-ct"><option>Carregando...</option></select></div>
+      <div class="fg"><div class="fl">Aluguel bruto (R$)</div><input class="fi" id="sp-val" value="1800"></div>
     </div>
-    <div style="background:#f8fafc;border-radius:8px;padding:12px;border:1px solid var(--bd);margin-bottom:10px;font-size:12px">
-      <div style="font-weight:600;margin-bottom:8px">Distribuição do valor</div>
+    <div style="background:#f8fafc;border-radius:8px;padding:11px;border:1px solid var(--bd);margin-bottom:10px;font-size:12px">
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:3px">
         <span>Repasse proprietário</span>
-        <div style="display:flex;align-items:center;gap:8px">
-          <input type="range" min="80" max="100" step="1" value="90" id="sl-prop" oninput="uSplit()" style="width:80px;accent-color:var(--loc)">
-          <span id="vl-prop" style="font-weight:600;min-width:75px">90% = R$1.620</span>
+        <div style="display:flex;align-items:center;gap:7px">
+          <input type="range" min="80" max="100" value="90" id="sl-prop" oninput="uSplit()" style="width:75px;accent-color:var(--loc)">
+          <span id="vl-prop" style="font-weight:700;min-width:72px">90% = R$1.620</span>
         </div>
       </div>
       <div class="sbar"><div class="sfill" id="sb-prop" style="width:90%;background:var(--loc)"></div></div>
-      <div style="display:flex;justify-content:space-between;margin:8px 0 3px">
-        <span>Comissão administração</span>
-        <span id="vl-adm" style="font-weight:600;color:var(--loc-acc)">10% = R$180</span>
-      </div>
-      <div class="sbar"><div class="sfill" id="sb-adm" style="width:10%;background:var(--loc-acc)"></div></div>
-    </div>
-    <div class="fgrid" style="gap:9px;margin-bottom:10px">
-      <div class="fg"><div class="fl">IRRF retido</div><input class="fi" value="0,00"></div>
-      <div class="fg"><div class="fl">Taxa bancária</div><input class="fi" value="0,00"></div>
-      <div class="fg"><div class="fl">Reparos descontados</div><input class="fi" value="0,00"></div>
-      <div class="fg"><div class="fl">Seguro incêndio</div><input class="fi" value="0,00"></div>
-    </div>
-    <div style="background:#f8fafc;border-radius:8px;padding:10px;border:1px solid var(--bd);font-size:12px;margin-bottom:10px">
-      <div style="display:flex;justify-content:space-between"><span style="color:var(--mu)">Aluguel bruto</span><span>R$1.800,00</span></div>
-      <div style="display:flex;justify-content:space-between"><span style="color:var(--mu)">(-) Comissão 10%</span><span style="color:var(--warn)">-R$180,00</span></div>
-      <div class="hr"></div>
-      <div style="display:flex;justify-content:space-between;font-weight:700"><span>Repasse líquido ao proprietário</span><span style="color:var(--loc-acc);font-size:14px">R$1.620,00</span></div>
+      <div style="display:flex;justify-content:space-between;margin:7px 0 3px"><span>Comissão imobiliária</span><span id="vl-adm" style="font-weight:700;color:var(--lac)">10% = R$180</span></div>
+      <div class="sbar"><div class="sfill" id="sb-adm" style="width:10%;background:var(--lac)"></div></div>
     </div>
     <div style="display:flex;gap:6px;flex-wrap:wrap">
       <button class="bs bla">Recibo de repasse</button>
       <button class="bs blo">Enviar via PIX</button>
       <button class="bs bo">Extrato ao proprietário</button>
-      <button class="bs bi">Modelo recibo IA ↗</button>
     </div>
-  </div>
-  <div class="pnl">
-    <div class="pt"><i class="ti ti-history"></i> Histórico de Repasses 2026</div>
-    <div class="row"><span style="flex:1">Mai/26 — A. Costa (Apto)</span><span class="tag tg">Realizado</span><span style="font-weight:600;margin-left:8px">R$1.620</span><span style="font-size:11px;color:var(--mu);margin-left:6px">PIX 05/05</span></div>
-    <div class="row"><span style="flex:1">Mai/26 — B. Lima (Casa)</span><span class="tag tg">Realizado</span><span style="font-weight:600;margin-left:8px">R$1.980</span><span style="font-size:11px;color:var(--mu);margin-left:6px">PIX 07/05</span></div>
-    <div class="row"><span style="flex:1">Jun/26 — A. Costa (Apto)</span><span class="tag to">Pendente</span><span style="font-weight:600;margin-left:8px">R$1.620</span><span style="font-size:11px;color:var(--mu);margin-left:6px">Aguarda pagt.</span></div>
-    <div class="row"><span style="flex:1">Jun/26 — B. Lima (Casa)</span><span class="tag to">Pendente</span><span style="font-weight:600;margin-left:8px">R$1.980</span><span style="font-size:11px;color:var(--mu);margin-left:6px">Aguarda pagt.</span></div>
   </div>
 </div>
 
-<!-- ========== DIMOB ========== -->
+<!-- ======= DIMOB ======= -->
 <div class="pg" id="pg-dimob">
   <div class="g2">
     <div class="pnl">
-      <div class="pt"><i class="ti ti-file-invoice"></i> DIMOB — Declaração Imobiliária</div>
-      <div style="font-size:12px;color:var(--mu);margin-bottom:10px">Obrigação acessória anual para imobiliárias e corretores. Prazo: último dia útil de fevereiro do ano seguinte.</div>
+      <div class="pt"><i class="ti ti-file-invoice"></i> DIMOB</div>
       <div class="dimob-c">
-        <div class="dimob-h">DIMOB 2025 (ano-base 2024)<span class="tag to">Prazo: 28/02/2026</span></div>
-        <div style="font-size:12px;color:var(--mu)">8 contratos de locação · 3 intermediações a informar</div>
-        <div style="display:flex;gap:6px;margin-top:8px;flex-wrap:wrap">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px"><div style="font-weight:600;font-size:12px">DIMOB 2025 (ano-base 2024)</div><span class="tag to">Prazo: 28/02/2026</span></div>
+        <div style="font-size:11px;color:var(--mu)" id="dimob-cnt">Carregando contratos do Firebase...</div>
+        <div style="display:flex;gap:5px;margin-top:7px;flex-wrap:wrap">
           <button class="bs blo">Gerar DIMOB</button>
-          <button class="bs bla">Como preencher ↗</button>
           <button class="bs bi">Exportar XML</button>
         </div>
       </div>
-      <div class="dimob-c">
-        <div class="dimob-h">DIMOB 2024 (ano-base 2023)<span class="tag tg">Entregue</span></div>
-        <div style="font-size:12px;color:var(--mu)">Entregue 26/02/2024 · 6 contratos informados</div>
-        <button class="bs bo" style="margin-top:7px">Baixar comprovante</button>
-      </div>
-      <div style="background:#fef3e2;border-radius:8px;padding:10px 12px;border:1px solid #f0ad4e40">
-        <div style="font-weight:600;color:#854f0b;margin-bottom:4px;font-size:12px"><i class="ti ti-alert-triangle"></i> Obrigatoriedade</div>
-        <div style="font-size:11px;color:#854f0b">PJ que intermediou locações acima de R$6.000/mês ou vendas de imóveis deve entregar a DIMOB. Multa mínima por omissão: R$500,00.</div>
-        <button class="bs bw" style="margin-top:7px">Entender obrigatoriedade ↗</button>
+      <div style="background:#fef3e2;border-radius:7px;padding:9px 11px;font-size:11px;border:1px solid #f0ad4e40">
+        <div style="font-weight:600;color:#854f0b;margin-bottom:3px"><i class="ti ti-alert-triangle"></i> Atenção</div>
+        <div style="color:#854f0b">Multa mínima por omissão: R$500,00. Entrega obrigatória para imobiliárias que intermediaram locações.</div>
       </div>
     </div>
     <div class="pnl">
-      <div class="pt"><i class="ti ti-list"></i> Dados para DIMOB 2025</div>
-      <div style="font-size:12px;color:var(--mu);margin-bottom:7px">Contratos de locação — ano-base 2024</div>
-      <div class="row"><div style="flex:1"><div style="font-weight:600">Maria Silva → A. Costa</div><div style="color:var(--mu)">Apto Centro · 12 meses</div></div><div style="text-align:right;font-weight:600">R$21.600</div><span class="tag tg" style="margin-left:6px">OK</span></div>
-      <div class="row"><div style="flex:1"><div style="font-weight:600">João Carlos → B. Lima</div><div style="color:var(--mu)">Casa Jd. Atl. · 12 meses</div></div><div style="text-align:right;font-weight:600">R$26.400</div><span class="tag tg" style="margin-left:6px">OK</span></div>
-      <div class="row"><div style="flex:1"><div style="font-weight:600">Pedro Rocha → C. Melo</div><div style="color:var(--mu)">Sala Com. · 10 meses</div></div><div style="text-align:right;font-weight:600">R$15.000</div><span class="tag to" style="margin-left:6px">Revisar</span></div>
-      <div style="margin-top:11px;font-size:12px;font-weight:600;margin-bottom:6px">Intermediações de compra e venda</div>
-      <div class="row"><div style="flex:1"><div style="font-weight:600">Carlos Melo (vendedor)</div><div style="color:var(--mu)">Casa Jd. Atlântico</div></div><div style="text-align:right;font-weight:600">R$440.000</div><span class="tag tg" style="margin-left:6px">OK</span></div>
-      <div style="display:flex;gap:6px;margin-top:10px;flex-wrap:wrap">
-        <button class="bs blo">Exportar XML DIMOB</button>
-        <button class="bs bi">Relatório DIMOB IA ↗</button>
-        <button class="bs bo">Relatório completo</button>
-      </div>
+      <div class="pt"><i class="ti ti-list"></i> Contratos para DIMOB</div>
+      <div id="dimob-lista"><div class="loading-row">Carregando do Firebase...</div></div>
     </div>
   </div>
 </div>
 
-<!-- ========== IR ========== -->
+<!-- ======= IR ======= -->
 <div class="pg" id="pg-ir">
   <div class="g2">
     <div class="pnl">
-      <div class="pt"><i class="ti ti-coin"></i> IR — Proprietários</div>
-      <div style="font-size:12px;color:var(--mu);margin-bottom:10px">Rendimentos de aluguel recebidos de PF são tributáveis via carnê-leão mensalmente e declaração anual do IRPF.</div>
-      <div class="ir-box">
-        <div class="ir-title"><i class="ti ti-user"></i> Proprietário A. Costa — Apto Centro</div>
-        <div style="font-size:12px">
-          <div class="row" style="padding:4px 0"><span style="color:var(--mu);flex:1">Rendimento bruto anual</span><span style="font-weight:600">R$21.600</span></div>
-          <div class="row" style="padding:4px 0"><span style="color:var(--mu);flex:1">Base de cálculo mensal</span><span style="font-weight:600">R$1.800</span></div>
-          <div class="row" style="padding:4px 0;border-bottom:none"><span style="color:var(--mu);flex:1">IR estimado (isento até R$2.259)</span><span style="color:var(--loc-acc);font-weight:600">R$0/mês</span></div>
-        </div>
-        <div style="display:flex;gap:6px;margin-top:8px;flex-wrap:wrap">
-          <button class="bs bla">Calcular IR ↗</button>
-          <button class="bs bo">Informe rendimentos</button>
-        </div>
+      <div class="pt"><i class="ti ti-coin"></i> Simulador Carnê-Leão / DARF</div>
+      <div class="fgrid" style="gap:9px;margin-bottom:9px">
+        <div class="fg"><div class="fl">Proprietário</div><input class="fi" id="ir-prop" placeholder="Nome do proprietário"></div>
+        <div class="fg"><div class="fl">Competência</div><input class="fi" id="ir-comp" type="month"></div>
+        <div class="fg"><div class="fl">Rendimento aluguel (R$)</div><input class="fi" id="ir-v" value="1800" oninput="cIR()"></div>
+        <div class="fg"><div class="fl">Deduções (INSS, dep.)</div><input class="fi" id="ir-d" value="0" oninput="cIR()"></div>
       </div>
-      <div style="background:#e6f1fb;border-radius:8px;padding:10px 12px;font-size:11px">
-        <div style="font-weight:600;color:#0c447c;margin-bottom:6px">Tabela progressiva IRPF 2026</div>
-        <div style="color:#185fa5;display:flex;flex-direction:column;gap:3px">
-          <div style="display:flex;justify-content:space-between"><span>Até R$2.259,20/mês</span><span style="font-weight:600">Isento</span></div>
-          <div style="display:flex;justify-content:space-between"><span>R$2.259,21 a R$2.826,65</span><span style="font-weight:600">7,5%</span></div>
-          <div style="display:flex;justify-content:space-between"><span>R$2.826,66 a R$3.751,05</span><span style="font-weight:600">15%</span></div>
-          <div style="display:flex;justify-content:space-between"><span>R$3.751,06 a R$4.664,68</span><span style="font-weight:600">22,5%</span></div>
-          <div style="display:flex;justify-content:space-between"><span>Acima de R$4.664,68</span><span style="font-weight:600">27,5%</span></div>
-        </div>
-        <button class="bs bi" style="margin-top:8px">Guia declaração IRPF ↗</button>
-      </div>
-    </div>
-    <div class="pnl">
-      <div class="pt"><i class="ti ti-file-dollar"></i> Simulador Carnê-Leão / DARF</div>
-      <div class="fgrid" style="gap:9px;margin-bottom:10px">
-        <div class="fg"><div class="fl">Proprietário</div><select class="fi"><option>A. Costa</option><option>B. Lima</option><option>C. Melo</option></select></div>
-        <div class="fg"><div class="fl">Competência</div><input class="fi" type="month" value="2026-05"></div>
-        <div class="fg"><div class="fl">Rendimento aluguel (R$)</div><input class="fi" value="1800" id="ir-v" oninput="cIR()"></div>
-        <div class="fg"><div class="fl">Deduções (INSS, dep.)</div><input class="fi" value="0" id="ir-d" oninput="cIR()"></div>
-      </div>
-      <div id="ir-res" style="background:#f8fafc;border-radius:8px;padding:10px;font-size:12px;margin-bottom:10px;border:1px solid var(--bd)">
-        <div style="display:flex;justify-content:space-between"><span style="color:var(--mu)">Base de cálculo</span><span>R$1.800,00</span></div>
-        <div class="hr"></div>
-        <div style="display:flex;justify-content:space-between;font-weight:700"><span>IR a recolher (isento)</span><span style="color:var(--loc-acc)">R$0,00</span></div>
-        <div style="font-size:11px;color:var(--mu);margin-top:4px">Base abaixo do limite de isenção de R$2.259,20</div>
-      </div>
+      <div id="ir-res" style="background:#f8fafc;border-radius:8px;padding:10px;font-size:12px;border:1px solid var(--bd);margin-bottom:9px"></div>
       <div style="display:flex;gap:6px;flex-wrap:wrap">
         <button class="bs blo">Gerar DARF</button>
         <button class="bs bla">Informe rendimentos</button>
-        <button class="bs bi">Modelo informe IA ↗</button>
+        <button class="bs bi">Guia declaração IRPF ↗</button>
+      </div>
+    </div>
+    <div class="pnl">
+      <div style="background:#e6f1fb;border-radius:8px;padding:10px 12px;font-size:11px;margin-bottom:10px">
+        <div style="font-weight:600;color:#0c447c;margin-bottom:5px">Tabela progressiva IRPF 2026</div>
+        <div style="color:#185fa5;display:flex;flex-direction:column;gap:3px">
+          <div style="display:flex;justify-content:space-between"><span>Até R$2.259,20/mês</span><span style="font-weight:700">Isento</span></div>
+          <div style="display:flex;justify-content:space-between"><span>R$2.259,21 a R$2.826,65</span><span style="font-weight:700">7,5%</span></div>
+          <div style="display:flex;justify-content:space-between"><span>R$2.826,66 a R$3.751,05</span><span style="font-weight:700">15%</span></div>
+          <div style="display:flex;justify-content:space-between"><span>R$3.751,06 a R$4.664,68</span><span style="font-weight:700">22,5%</span></div>
+          <div style="display:flex;justify-content:space-between"><span>Acima de R$4.664,68</span><span style="font-weight:700">27,5%</span></div>
+        </div>
+      </div>
+      <div class="pnl" style="box-shadow:none">
+        <div class="pt"><i class="ti ti-users"></i> Proprietários (Firebase)</div>
+        <div id="ir-props"><div class="loading-row">Carregando contratos...</div></div>
       </div>
     </div>
   </div>
 </div>
 
-<!-- ========== PORTAL LOCATÁRIO ========== -->
+<!-- ======= PORTAL LOCATÁRIO ======= -->
 <div class="pg" id="pg-portal-loc">
   <div class="g2">
     <div class="pnl">
       <div class="pt"><i class="ti ti-device-laptop"></i> Portal do Locatário</div>
-      <div style="font-size:12px;color:var(--mu);margin-bottom:10px">Área online exclusiva: 2ª via de boleto, histórico, chamados, contratos e notificações.</div>
-      <div style="background:#f8fafc;border-radius:8px;overflow:hidden;margin-bottom:11px;border:1px solid var(--bd)">
-        <div style="background:var(--loc);color:#fff;padding:10px 13px;font-size:12px;font-weight:600;display:flex;justify-content:space-between"><span>Área do Locatário</span><span style="font-size:11px;opacity:.75">imopro.com.br/minhaconta</span></div>
-        <div style="padding:10px 13px">
-          <div class="notif"><div class="dot" style="background:#00b894"></div><div><div style="font-weight:600">Boleto junho/2026 disponível</div><div style="color:var(--mu);font-size:11px">Vence 05/06 · R$1.800,00</div></div></div>
-          <div class="notif"><div class="dot" style="background:#0984e3"></div><div><div style="font-weight:600">Contrato disponível para download</div><div style="color:var(--mu);font-size:11px">Contrato #001/2024 assinado</div></div></div>
-          <div class="notif"><div class="dot" style="background:#6c5ce7"></div><div><div style="font-weight:600">Chamado de manutenção #14</div><div style="color:var(--mu);font-size:11px">Vazamento cozinha — em análise</div></div></div>
-          <div style="display:flex;gap:6px;margin-top:8px;flex-wrap:wrap">
+      <div style="background:#f8fafc;border-radius:8px;overflow:hidden;margin-bottom:10px;border:1px solid var(--bd)">
+        <div style="background:var(--loc);color:#fff;padding:9px 12px;font-size:12px;font-weight:600;display:flex;justify-content:space-between"><span>Área do Locatário</span><span style="font-size:10px;opacity:.75">imopro.com.br/minhaconta</span></div>
+        <div style="padding:10px 12px">
+          <div class="notif"><div class="ndot" style="background:#00b894"></div><div><div style="font-weight:600">Boleto disponível</div><div style="color:var(--mu);font-size:10px">Acesse pelo portal</div></div></div>
+          <div class="notif"><div class="ndot" style="background:#0984e3"></div><div><div style="font-weight:600">Contrato disponível para download</div><div style="color:var(--mu);font-size:10px">Contrato assinado</div></div></div>
+          <div style="display:flex;gap:5px;margin-top:7px;flex-wrap:wrap">
             <button class="bs bla">2ª via boleto</button>
             <button class="bs blo">Meus contratos</button>
             <button class="bs bo">Abrir chamado</button>
           </div>
         </div>
       </div>
-      <div style="font-size:12px;display:flex;flex-direction:column;gap:5px">
-        <div class="row" style="padding:4px 0"><i class="ti ti-check" style="color:#00b894"></i><span>2ª via de boleto e histórico de pagamentos</span></div>
-        <div class="row" style="padding:4px 0"><i class="ti ti-check" style="color:#00b894"></i><span>Download de contratos e documentos</span></div>
-        <div class="row" style="padding:4px 0"><i class="ti ti-check" style="color:#00b894"></i><span>Abertura e acompanhamento de chamados</span></div>
-        <div class="row" style="padding:4px 0"><i class="ti ti-check" style="color:#00b894"></i><span>Solicitação de rescisão e laudo de saída</span></div>
-        <div class="row" style="padding:4px 0;border:none"><i class="ti ti-check" style="color:#00b894"></i><span>Alertas por WhatsApp e e-mail automáticos</span></div>
-      </div>
     </div>
     <div class="pnl">
       <div class="pt"><i class="ti ti-message-circle"></i> Chat com Locatário</div>
-      <div style="background:#e5ddd5;border-radius:8px;padding:12px;margin-bottom:10px;min-height:200px">
-        <div><div class="cb">Meu boleto de junho não chegou, podem reenviar?</div><div class="ct">Maria Silva · 09:14</div></div>
-        <div style="text-align:right"><div class="cb out">Reenviei ao seu e-mail! Também disponível em: imopro.com.br/minhaconta</div><div class="ct">ImóPro · 09:17 ✓✓</div></div>
-        <div><div class="cb">Tenho um vazamento na cozinha, como abro chamado?</div><div class="ct">Maria Silva · 09:19</div></div>
-        <div style="text-align:right"><div class="cb out">Chamado #14 aberto! Nossa equipe entra em contato em até 24h. 🔧</div><div class="ct">ImóPro · 09:20 ✓✓</div></div>
+      <div style="background:#e5ddd5;border-radius:8px;padding:11px;margin-bottom:9px;min-height:160px">
+        <div><div class="cb-chat">Meu boleto não chegou, podem reenviar?</div><div class="ct">Locatário · 09:14</div></div>
+        <div style="text-align:right"><div class="cb-chat out">Reenviei ao seu e-mail! Também disponível no portal.</div><div class="ct">ImóPro · 09:17 ✓✓</div></div>
       </div>
-      <div style="display:flex;gap:7px">
-        <input class="fi" type="text" placeholder="Responder ao locatário..." style="flex:1">
+      <div style="display:flex;gap:6px">
+        <input class="fi" type="text" placeholder="Responder..." style="flex:1">
         <button class="bs bla"><i class="ti ti-send"></i></button>
         <button class="bs bw"><i class="ti ti-brand-whatsapp"></i></button>
       </div>
@@ -824,77 +583,71 @@ Posso agendar uma visita?</textarea></div>
   </div>
 </div>
 
-<!-- ========== LEADS LOCAÇÃO ========== -->
+<!-- ======= LEADS LOCAÇÃO ======= -->
 <div class="pg" id="pg-leads-loc">
-  <div class="pnl" style="margin-bottom:13px">
-    <div class="pt"><i class="ti ti-user-search"></i> Leads para Locação</div>
-    <div style="display:flex;gap:8px;margin-bottom:10px;flex-wrap:wrap">
-      <input class="fi" type="text" placeholder="Buscar lead..." style="flex:1">
-      <select class="fi"><option>Todos</option><option>Novo</option><option>Análise crédito</option><option>Proposta enviada</option></select>
-      <button class="bs bla">Script IA ↗</button>
+  <div class="pnl" style="margin-bottom:12px">
+    <div class="pt"><i class="ti ti-user-search"></i> Leads para Locação — Firebase</div>
+    <div id="alert-ll"></div>
+    <div class="fgrid">
+      <div class="fg full"><div class="fl">Nome</div><input class="fi" id="ll-nome" placeholder="Nome do interessado"></div>
+      <div class="fg"><div class="fl">WhatsApp</div><input class="fi" id="ll-fone" placeholder="(75) 99999-9999"></div>
+      <div class="fg"><div class="fl">Orçamento aluguel (R$)</div><input class="fi" id="ll-orc" type="number" placeholder="1200"></div>
+      <div class="fg"><div class="fl">Tipo desejado</div><select class="fi" id="ll-tipo"><option>Casa</option><option>Apartamento</option><option>Sala Comercial</option><option>Quitinete</option></select></div>
+      <div class="fg"><div class="fl">Status</div><select class="fi" id="ll-st"><option>Novo</option><option>Em análise</option><option>Proposta enviada</option><option>Aprovado</option></select></div>
+      <div class="fg"><div class="fl">Score Serasa</div><input class="fi" id="ll-score" type="number" placeholder="750"></div>
+      <div class="fg"><div class="fl">Renda mensal (R$)</div><input class="fi" id="ll-renda" type="number" placeholder="4000" oninput="calcCred()"></div>
+      <div class="fg"><div class="fl">Garantia</div><select class="fi" id="ll-gar"><option>Caução</option><option>Fiador</option><option>Seguro fiança</option></select></div>
     </div>
-    <div class="row"><div class="av avb">FS</div><div style="flex:1"><div style="font-weight:600">Fernanda Souza</div><div style="color:var(--mu)">Apto 2q · orç. R$1.200/mês · WhatsApp</div></div><span class="tag tg">Novo</span><button class="bs bla" style="margin-left:6px">Proposta</button></div>
-    <div class="row"><div class="av ava">TM</div><div style="flex:1"><div style="font-weight:600">Thiago Mendes</div><div style="color:var(--mu)">Sala comercial · orç. R$2.000/mês</div></div><span class="tag to">Análise</span><button class="bs blo" style="margin-left:6px">Contato</button></div>
-    <div class="row"><div class="av avg">CL</div><div style="flex:1"><div style="font-weight:600">Clara Lima</div><div style="color:var(--mu)">Casa 3q cond. · orç. R$3.500/mês</div></div><span class="tag tb">Proposta</span><button class="bs bo" style="margin-left:6px">Follow-up</button></div>
-    <div class="row"><div class="av avr">RO</div><div style="flex:1"><div style="font-weight:600">Rafael Oliveira</div><div style="color:var(--mu)">Quitinete · orç. R$700/mês · OLX</div></div><span class="tag tp">Análise crédito</span><button class="bs bo" style="margin-left:6px">Resultado</button></div>
-    <div class="row"><div class="av avb">IG</div><div style="flex:1"><div style="font-weight:600">Isabela Gomes</div><div style="color:var(--mu)">Apto mobiliado · orç. R$1.800/mês</div></div><span class="tag tg">Novo</span><button class="bs bla" style="margin-left:6px">Proposta</button></div>
+    <div id="cred-res" style="margin:9px 0;display:none"></div>
+    <button class="bs bp" style="margin-top:8px" id="btn-ll" onclick="salvarLeadLoc()"><i class="ti ti-device-floppy"></i> Salvar Lead no Firebase</button>
   </div>
-  <div class="pnl">
-    <div class="pt"><i class="ti ti-search"></i> Análise de Crédito Rápida</div>
-    <div class="fgrid" style="gap:9px;margin-bottom:10px">
-      <div class="fg"><div class="fl">Renda mensal comprovada (R$)</div><input class="fi" id="cr-r" placeholder="Ex: 5000"></div>
-      <div class="fg"><div class="fl">Valor do aluguel (R$)</div><input class="fi" id="cr-a" placeholder="Ex: 1500"></div>
-      <div class="fg"><div class="fl">Score Serasa (0–1000)</div><input class="fi" id="cr-s" placeholder="Ex: 720"></div>
-      <div class="fg"><div class="fl">Garantia</div><select class="fi"><option>Caução</option><option>Fiador</option><option>Seguro fiança</option><option>Título capitalização</option></select></div>
-    </div>
-    <div style="display:flex;gap:6px;flex-wrap:wrap">
-      <button class="bs bla" onclick="aCred()">Analisar crédito</button>
-      <button class="bs bi">Documentos necessários ↗</button>
-      <button class="bs bo">Checklist vistoria ↗</button>
-    </div>
-    <div id="cred-res"></div>
-  </div>
+  <div class="pnl"><div class="pt"><i class="ti ti-users"></i> Leads de Locação</div><div id="lista-lleads"><div class="loading-row">Carregando...</div></div></div>
 </div>
 
-<!-- ========== MANUTENÇÃO ========== -->
+<!-- ======= MANUTENÇÃO ======= -->
 <div class="pg" id="pg-manut">
-  <div class="pnl">
-    <div class="pt"><i class="ti ti-tool"></i> Chamados de Manutenção</div>
-    <div class="row"><div style="flex:1"><div style="font-weight:600">#14 — Vazamento na cozinha</div><div style="color:var(--mu)">Maria Silva · Apto Centro · 31/05</div></div><span class="tag tr">Urgente</span><button class="bs bw" style="margin-left:7px">Contato</button></div>
-    <div class="row"><div style="flex:1"><div style="font-weight:600">#13 — Troca de torneira</div><div style="color:var(--mu)">João Carlos · Casa Jd. Atl. · 28/05</div></div><span class="tag to">Em andamento</span><button class="bs blo" style="margin-left:7px">Atualizar</button></div>
-    <div class="row"><div style="flex:1"><div style="font-weight:600">#12 — Pintura área externa</div><div style="color:var(--mu)">Lúcia Ferreira · Casa Cond. · 20/05</div></div><span class="tag tg">Concluído</span><button class="bs bo" style="margin-left:7px">Ver laudo</button></div>
-    <div style="display:flex;gap:7px;margin-top:11px;flex-wrap:wrap">
-      <button class="bs blo">Novo chamado</button>
-      <button class="bs bi">Responsabilidades ↗</button>
-      <button class="bs bla">Laudo vistoria IA ↗</button>
+  <div class="pnl" style="margin-bottom:12px">
+    <div class="pt"><i class="ti ti-tool"></i> Novo Chamado — Firebase</div>
+    <div id="alert-mn"></div>
+    <div class="fgrid">
+      <div class="fg full"><div class="fl">Descrição do problema</div><input class="fi" id="mn-desc" placeholder="Ex: Vazamento na cozinha"></div>
+      <div class="fg"><div class="fl">Locatário</div><input class="fi" id="mn-loc" placeholder="Nome do locatário"></div>
+      <div class="fg"><div class="fl">Imóvel</div><input class="fi" id="mn-im" placeholder="Endereço/imóvel"></div>
+      <div class="fg"><div class="fl">Prioridade</div><select class="fi" id="mn-pri"><option>Normal</option><option>Urgente</option><option>Baixa</option></select></div>
+      <div class="fg"><div class="fl">Status</div><select class="fi" id="mn-st"><option>Aberto</option><option>Em andamento</option><option>Concluído</option></select></div>
     </div>
+    <button class="bs bw" style="margin-top:9px" id="btn-mn" onclick="salvarManutencao()"><i class="ti ti-device-floppy"></i> Abrir Chamado no Firebase</button>
   </div>
+  <div class="pnl"><div class="pt"><i class="ti ti-list"></i> Chamados Abertos</div><div id="lista-manut"><div class="loading-row">Carregando...</div></div></div>
 </div>
 
-<!-- ========== RELATÓRIOS ========== -->
+<!-- ======= RELATÓRIOS ======= -->
 <div class="pg" id="pg-relatorios">
   <div class="metrics">
-    <div class="mc"><div class="ml">Imóveis Vendidos (mês)</div><div class="mv">3</div><div class="mch up">↑ 50% vs anterior</div></div>
-    <div class="mc"><div class="ml">Receita Comissões</div><div class="mv" style="font-size:15px">R$42.000</div><div class="mch up">↑ 18%</div></div>
-    <div class="mc"><div class="ml">Taxa de Conversão</div><div class="mv">9,4%</div><div class="mch nu">32 leads → 3 vendas</div></div>
-    <div class="mc"><div class="ml">Tempo Médio Venda</div><div class="mv">28 dias</div><div class="mch dn">↓ 5 dias</div></div>
+    <div class="mc"><div class="ml">Total Imóveis</div><div class="mv" id="rel-im">—</div><div class="mch nu">Firebase</div></div>
+    <div class="mc"><div class="ml">Total Leads</div><div class="mv" id="rel-ld">—</div><div class="mch nu">Firebase</div></div>
+    <div class="mc"><div class="ml">Contratos Ativos</div><div class="mv" id="rel-ct">—</div><div class="mch nu">Firebase</div></div>
+    <div class="mc"><div class="ml">Cobranças Emitidas</div><div class="mv" id="rel-cb">—</div><div class="mch nu">Firebase</div></div>
   </div>
   <div class="pnl">
-    <div class="pt"><i class="ti ti-robot"></i> Análise com IA</div>
+    <div class="pt"><i class="ti ti-robot"></i> Análise IA</div>
     <div style="display:flex;gap:8px;flex-wrap:wrap">
       <button class="bs bp">Análise de Performance ↗</button>
       <button class="bs ba">Relatório Mensal ↗</button>
       <button class="bs bgr">Análise de Mercado ↗</button>
-      <button class="bs blo">Relatório Locações ↗</button>
-      <button class="bs bla">Extrato Proprietários ↗</button>
+      <button class="bs blo">Extrato Proprietários ↗</button>
     </div>
   </div>
 </div>
 
-<!-- ========== CONFIG ========== -->
+<!-- ======= CONFIG ======= -->
 <div class="pg" id="pg-config">
   <div class="pnl">
-    <div class="pt"><i class="ti ti-settings"></i> Configurações do Portal</div>
+    <div class="pt"><i class="ti ti-settings"></i> Configurações</div>
+    <div style="background:#e8f8f0;border-radius:8px;padding:10px 12px;margin-bottom:12px;border:1px solid #a3d9b8;font-size:12px;display:flex;align-items:center;gap:8px">
+      <i class="ti ti-database" style="color:#0f6e56;font-size:18px"></i>
+      <div><div style="font-weight:600;color:#0f6e56">Firebase Conectado</div><div style="color:#0f6e56">Projeto: imopro-portal · Firestore ativo</div></div>
+    </div>
     <div class="fgrid">
       <div class="fg"><div class="fl">Nome da Imobiliária</div><input class="fi" value="ImóPro Negócios Imobiliários"></div>
       <div class="fg"><div class="fl">CRECI</div><input class="fi" value="CRECI-BA 12345-J"></div>
@@ -902,17 +655,8 @@ Posso agendar uma visita?</textarea></div>
       <div class="fg"><div class="fl">E-mail</div><input class="fi" value="contato@imopro.com.br"></div>
       <div class="fg full"><div class="fl">Endereço</div><input class="fi" value="Paulo Afonso, Bahia, Brasil"></div>
     </div>
-    <div style="margin-top:16px">
-      <div style="font-size:13px;font-weight:600;margin-bottom:9px">Integrações</div>
-      <div style="display:flex;flex-direction:column;gap:7px;font-size:12px">
-        <div style="display:flex;align-items:center;gap:9px;padding:9px 12px;border-radius:8px;border:1px solid var(--bd)"><span style="font-size:18px">💬</span><span style="flex:1">WhatsApp Business API</span><span class="tag tg">Conectado</span></div>
-        <div style="display:flex;align-items:center;gap:9px;padding:9px 12px;border-radius:8px;border:1px solid var(--bd)"><span style="font-size:18px">🏠</span><span style="flex:1">Zap Imóveis</span><span class="tag to">Configurar</span></div>
-        <div style="display:flex;align-items:center;gap:9px;padding:9px 12px;border-radius:8px;border:1px solid var(--bd)"><span style="font-size:18px">📸</span><span style="flex:1">Instagram Business</span><span class="tag tb">Conectar</span></div>
-        <div style="display:flex;align-items:center;gap:9px;padding:9px 12px;border-radius:8px;border:1px solid var(--bd)"><span style="font-size:18px">📊</span><span style="flex:1">OLX Imóveis</span><span class="tag tb">Conectar</span></div>
-      </div>
-    </div>
-    <div style="margin-top:13px;display:flex;gap:8px;justify-content:flex-end">
-      <button class="bs blo" style="padding:7px 20px;font-size:12px">Salvar Configurações</button>
+    <div style="margin-top:13px;display:flex;gap:7px;justify-content:flex-end">
+      <button class="bs blo" style="padding:7px 18px">Salvar Configurações</button>
     </div>
   </div>
 </div>
@@ -921,109 +665,329 @@ Posso agendar uma visita?</textarea></div>
 </div><!-- /main -->
 </div><!-- /shell -->
 
-<script>
-const titles={
-  dashboard:'Dashboard Geral',imoveis:'Meus Imóveis',publicar:'Publicar Novo Imóvel',
-  crm:'CRM — Funil de Vendas',whatsapp:'WhatsApp Marketing',
-  regulacao:'Regulação & Despachante Imobiliário',marketing:'Marketing & Gerador de Banners',
-  'loc-dash':'Dashboard de Locação',contratos:'Contratos de Locação',
-  cobr:'Cobranças e Boletos',split:'Split de Pagamentos & Repasses',
-  dimob:'DIMOB — Declaração Imobiliária',ir:'Imposto de Renda — Proprietários',
-  'portal-loc':'Portal do Locatário','leads-loc':'Leads para Locação',
-  manut:'Chamados de Manutenção',relatorios:'Relatórios & Análises',config:'Configurações'
+<!-- ===== FIREBASE SDK + APP LOGIC ===== -->
+<script type="module">
+import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js';
+import {
+  getFirestore, collection, addDoc, getDocs, deleteDoc, doc,
+  onSnapshot, serverTimestamp, query, orderBy, limit, where
+} from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
+
+// ===== CONFIG FIREBASE =====
+const firebaseConfig = {
+  apiKey: "AIzaSyDEa19EQxhpxNNDJyxdlC48kfoP0BQtHso",
+  authDomain: "imopro-portal.firebaseapp.com",
+  projectId: "imopro-portal",
+  storageBucket: "imopro-portal.firebasestorage.app",
+  messagingSenderId: "251931175141",
+  appId: "1:251931175141:web:3825de4996e9eb565a8c0c"
 };
 
-function sp(id, el) {
-  document.querySelectorAll('.pg').forEach(p => p.classList.remove('on'));
-  document.querySelectorAll('.ni').forEach(n => n.classList.remove('on'));
-  const pg = document.getElementById('pg-' + id);
-  if (pg) pg.classList.add('on');
-  if (el) el.classList.add('on');
-  document.getElementById('tb-title').textContent = titles[id] || id;
+const app = initializeApp(firebaseConfig);
+const db  = getFirestore(app);
+
+// ===== STATUS =====
+function setFbStatus(ok, txt) {
+  document.getElementById('fb-dot').className = 'fb-dot ' + (ok ? 'ok' : 'loading');
+  document.getElementById('fb-st-txt').textContent = txt;
 }
 
-function uSplit() {
-  const v = parseInt(document.getElementById('sl-prop').value);
-  const b = 1800;
-  document.getElementById('sb-prop').style.width = v + '%';
-  document.getElementById('sb-adm').style.width = (100 - v) + '%';
-  document.getElementById('vl-prop').textContent = v + '% = R$' + Math.round(b * v / 100).toLocaleString('pt-BR');
-  document.getElementById('vl-adm').textContent = (100 - v) + '% = R$' + Math.round(b * (100 - v) / 100).toLocaleString('pt-BR');
-}
-
-function cIR() {
-  const v = parseFloat(document.getElementById('ir-v').value) || 0;
-  const d = parseFloat(document.getElementById('ir-d').value) || 0;
-  const base = v - d;
-  let ir = 0, al = 'isento', obs = 'Base abaixo do limite de isenção de R$2.259,20';
-  if (base > 4664.68) { ir = base * 0.275 - 869.36; al = '27,5%'; obs = 'Recolher via carnê-leão no e-CAC até o último dia útil do mês seguinte.'; }
-  else if (base > 3751.05) { ir = base * 0.225 - 636.13; al = '22,5%'; obs = 'Recolher via carnê-leão no e-CAC.'; }
-  else if (base > 2826.65) { ir = base * 0.15 - 354.80; al = '15%'; obs = 'Recolher via carnê-leão no e-CAC.'; }
-  else if (base > 2259.20) { ir = base * 0.075 - 169.44; al = '7,5%'; obs = 'Recolher via carnê-leão no e-CAC.'; }
-  const fmt = n => 'R$' + Math.max(0, n).toLocaleString('pt-BR', {minimumFractionDigits:2, maximumFractionDigits:2});
-  document.getElementById('ir-res').innerHTML = `<div style="display:flex;justify-content:space-between"><span style="color:var(--mu)">Base de cálculo</span><span>${fmt(base)}</span></div><hr style="border:none;border-top:1px solid var(--bd);margin:7px 0"><div style="display:flex;justify-content:space-between;font-weight:700"><span>IR a recolher (${al})</span><span style="color:${ir>0?'#e17055':'#2ecc71'}">${fmt(ir)}</span></div><div style="font-size:11px;color:var(--mu);margin-top:4px">${obs}</div>`;
-}
-
-function aCred() {
-  const r = parseFloat(document.getElementById('cr-r').value) || 0;
-  const a = parseFloat(document.getElementById('cr-a').value) || 0;
-  const s = parseInt(document.getElementById('cr-s').value) || 0;
-  const el = document.getElementById('cred-res');
-  if (!r || !a) { el.style.display = 'block'; el.innerHTML = '<div style="color:var(--warn);padding:9px;background:#fef3e2;border-radius:8px;border:1px solid #f0ad4e40;font-size:12px">Preencha a renda mensal e o valor do aluguel.</div>'; return; }
-  const rt = a / r * 100;
-  let st, cor, bg, msg;
-  if (rt <= 30 && s >= 600) { st = '✅ Aprovado'; cor = '#0f6e56'; bg = '#e8f8f0'; msg = 'Renda e score adequados. Prosseguir com contrato.'; }
-  else if (rt <= 40 && s >= 500) { st = '⚠️ Aprovado com ressalvas'; cor = '#854f0b'; bg = '#fef3e2'; msg = 'Renda limítrofe. Recomendável solicitar garantia adicional.'; }
-  else { st = '❌ Análise necessária'; cor = '#a32d2d'; bg = '#fcebeb'; msg = 'Renda insuficiente (ideal: aluguel ≤ 30% da renda) ou score baixo.'; }
-  el.style.display = 'block';
-  el.innerHTML = `<div style="background:${bg};border-radius:8px;padding:10px;border:1px solid ${cor}20;margin-top:9px;font-size:12px"><div style="font-weight:700;color:${cor};margin-bottom:4px">${st}</div><div style="color:${cor}">${msg}</div><div style="margin-top:5px">Comprometimento de renda: <b>${rt.toFixed(1)}%</b> (ideal ≤ 30%)</div></div>`;
-}
-
-function updateBanner() {
-  const map = {
-    'Casa Jardim Atlântico': ['Casa Jardim Atlântico','3 quartos · 120m² · Piscina','R$ 450.000'],
-    'Apto 3q Centro': ['Apto 3 Quartos Centro','78m² · 3q · 1 vaga','R$ 280.000'],
-    'Sala Comercial': ['Sala Comercial Premium','45m² · Localização central','R$ 1.800/mês'],
-    'Terreno Zona Norte': ['Terreno Zona Norte','360m² · Plano · Escriturado','R$ 120.000']
-  };
-  const v = document.getElementById('ban-imovel').value;
-  const d = map[v] || [v,'',''];
-  document.getElementById('ban-title').textContent = d[0];
-  document.getElementById('ban-sub').textContent = d[1];
-  document.getElementById('ban-price').textContent = d[2];
-  document.getElementById('ban-sltxt').textContent = document.getElementById('ban-sl').value;
-}
-
-function selTpl(el, c1, c2) {
-  document.querySelectorAll('.tpl-card').forEach(t => t.classList.remove('sel'));
-  el.classList.add('sel');
-  document.getElementById('banner-prev').style.background = `linear-gradient(135deg,${c1} 60%,${c2} 100%)`;
-}
-
-const waMsgs = {
-  interesse: 'Olá! Temos um imóvel perfeito para você 🏠\n\n*Casa Jardim Atlântico*\n✅ 3 quartos | 120m² | Piscina\n💰 R$ 450.000\n📍 Paulo Afonso, BA\n\nPosso agendar uma visita?',
-  visita: 'Olá! Gostaria de agendar uma visita? 📅\n\nTemos horários disponíveis:\n• Amanhã às 10h ou 14h\n• Quarta às 9h ou 16h\n\nQual prefere?',
-  proposta: 'Olá! Preparamos uma proposta especial 📋\n\nCondições facilitadas e documentação rápida!\n\nPosso enviar os detalhes?',
-  follow: 'Olá! Tudo bem? 😊\n\nPassei para saber se ainda tem interesse no imóvel.\n\nPosso ajudar com mais informações?'
+// ===== UTILS =====
+const fmtR  = v => 'R$' + Number(v||0).toLocaleString('pt-BR', {minimumFractionDigits:0});
+const fmtD  = s => s ? new Date(s+'T12:00:00').toLocaleDateString('pt-BR') : '—';
+const stTag = s => {
+  const m = {Ativo:'tg',Novo:'tg','Em dia':'tg',Pago:'tg',Fechado:'tg','Aprovado':'tg','Em Contato':'tb','Visita Agendada':'tb','Em andamento':'tb','Análise':'tb','Em análise':'tb',Proposta:'tp','Proposta enviada':'tp',Pendente:'to','A vencer':'to','Aberto':'to',Atrasado:'tr',Inadimplente:'tr',Urgente:'tr'};
+  return `<span class="tag ${m[s]||'to'}">${s}</span>`;
 };
-function setWA(type) {
-  const el = document.getElementById('wa-msg');
-  if (el) el.value = waMsgs[type] || '';
+
+function showAlert(id, msg, tipo='ok') {
+  const el = document.getElementById(id);
+  if (!el) return;
+  el.innerHTML = `<div class="alert ${tipo==='ok'?'al-ok':'al-err'}"><i class="ti ti-${tipo==='ok'?'circle-check':'circle-x'}"></i>${msg}</div>`;
+  setTimeout(() => el.innerHTML='', 4000);
 }
 
-function addPhotos(input) {
-  const grid = document.getElementById('photo-grid');
-  Array.from(input.files).slice(0, 8).forEach(() => {
-    const div = document.createElement('div');
-    div.className = 'photo-th';
-    div.style.background = '#e8f0fb';
-    div.innerHTML = '📷<button class="pdel" onclick="this.parentNode.remove()">×</button>';
-    grid.appendChild(div);
+function setBtnLoading(id, loading) {
+  const btn = document.getElementById(id);
+  if (!btn) return;
+  btn.disabled = loading;
+  if (loading) btn.innerHTML = '<span class="spinner"></span> Salvando...';
+}
+
+function resetBtn(id, txt) {
+  const btn = document.getElementById(id);
+  if (!btn) return;
+  btn.disabled = false;
+  btn.innerHTML = `<i class="ti ti-device-floppy"></i> ${txt}`;
+}
+
+// ===== LISTENERS EM TEMPO REAL =====
+let allImoveis = [], allLeads = [], allContratos = [], allCobr = [], allLleads = [], allManut = [];
+
+function initListeners() {
+  // IMÓVEIS
+  onSnapshot(query(collection(db,'imoveis'), orderBy('criadoEm','desc')), snap => {
+    allImoveis = snap.docs.map(d=>({id:d.id,...d.data()}));
+    const n = allImoveis.length;
+    document.getElementById('bdg-imoveis').textContent = n;
+    document.getElementById('d-imoveis').textContent = n;
+    document.getElementById('d-imoveis-s').textContent = n + ' no banco';
+    document.getElementById('rel-im').textContent = n;
+    renderImoveis(allImoveis);
+    renderDashImoveis(allImoveis.slice(0,4));
+    renderBannerSelect(allImoveis);
+    setFbStatus(true, 'Firebase conectado');
+  });
+
+  // LEADS VENDA
+  onSnapshot(query(collection(db,'leads'), orderBy('criadoEm','desc')), snap => {
+    allLeads = snap.docs.map(d=>({id:d.id,...d.data()}));
+    const n = allLeads.length;
+    document.getElementById('bdg-leads').textContent = n;
+    document.getElementById('d-leads').textContent = n;
+    document.getElementById('d-leads-s').textContent = n + ' leads ativos';
+    document.getElementById('rel-ld').textContent = n;
+    renderKanban(allLeads);
+    renderDashLeads(allLeads.slice(0,4));
+    renderWaLeads(allLeads.slice(0,6));
+  });
+
+  // CONTRATOS
+  onSnapshot(query(collection(db,'contratos'), orderBy('criadoEm','desc')), snap => {
+    allContratos = snap.docs.map(d=>({id:d.id,...d.data()}));
+    const n = allContratos.length;
+    document.getElementById('bdg-contratos').textContent = n;
+    document.getElementById('d-contratos').textContent = n;
+    document.getElementById('rel-ct').textContent = n;
+    document.getElementById('ld-ct').textContent = n;
+    const rec = allContratos.reduce((a,c)=>a+(c.valor||0),0);
+    document.getElementById('ld-rec').textContent = fmtR(rec);
+    renderContratos(allContratos);
+    renderDashContratos(allContratos.slice(0,4));
+    renderSplitSelect(allContratos);
+    renderIRProps(allContratos);
+    renderDimob(allContratos);
+  });
+
+  // COBRANÇAS
+  onSnapshot(query(collection(db,'cobr'), orderBy('criadoEm','desc')), snap => {
+    allCobr = snap.docs.map(d=>({id:d.id,...d.data()}));
+    const n = allCobr.length;
+    const pend = allCobr.filter(c=>c.status==='Pendente'||c.status==='Atrasado').length;
+    document.getElementById('bdg-cobr').textContent = pend;
+    document.getElementById('d-cobr').textContent = pend;
+    document.getElementById('d-cobr-s').textContent = pend + ' pendentes';
+    document.getElementById('rel-cb').textContent = n;
+    document.getElementById('ld-cb').textContent = pend;
+    renderCobr(allCobr);
+    renderDashCobr(allCobr.slice(0,4));
+  });
+
+  // LEADS LOCAÇÃO
+  onSnapshot(query(collection(db,'leads_loc'), orderBy('criadoEm','desc')), snap => {
+    allLleads = snap.docs.map(d=>({id:d.id,...d.data()}));
+    const n = allLleads.length;
+    document.getElementById('bdg-lleads').textContent = n;
+    document.getElementById('ld-ll').textContent = n;
+    renderLleads(allLleads);
+  });
+
+  // MANUTENÇÃO
+  onSnapshot(query(collection(db,'manutencao'), orderBy('criadoEm','desc')), snap => {
+    allManut = snap.docs.map(d=>({id:d.id,...d.data()}));
+    renderManut(allManut);
   });
 }
 
-// Init IR calc
-cIR();
-</script>
-</body>
-</html>
+// ===== RENDER FUNCTIONS =====
+function renderImoveis(docs) {
+  const el = document.getElementById('lista-imoveis');
+  if (!docs.length) { el.innerHTML='<div class="empty-state" style="grid-column:1/-1"><i class="ti ti-building-off"></i>Nenhum imóvel cadastrado no Firebase.</div>'; return; }
+  const emojis = {Casa:'🏠',Apartamento:'🏢','Sala Comercial':'🏪',Terreno:'🌿',Galpão:'🏭'};
+  const cores  = {Casa:'#e8f0fb',Apartamento:'#fef3e2','Sala Comercial':'#f3e8fb',Terreno:'#e8fbe8',Galpão:'#f0f0f0'};
+  el.innerHTML = docs.map(d=>`
+    <div class="icard">
+      <div class="ithumb" style="background:${cores[d.tipo]||'#eee'}">${emojis[d.tipo]||'🏠'}<span class="tt tag ${d.finalidade==='Aluguel'?'to':'tg'}">${d.finalidade||'Venda'}</span></div>
+      <div class="icbody">
+        <div class="ict">${d.titulo||'Sem título'}</div>
+        <div class="ica"><i class="ti ti-map-pin"></i> ${d.cidade||'—'}</div>
+        <div class="icp">${fmtR(d.preco)}</div>
+        <div class="icd"><span>${d.area||0}m²</span><span>${d.quartos||0}q</span><span>${d.vagas||0} vaga(s)</span></div>
+      </div>
+      <div class="icact">
+        <button class="bs bp" style="font-size:10px">Ver</button>
+        <button class="bs bo" style="font-size:10px">Editar</button>
+        <button class="bs bw" style="font-size:10px" onclick="delDoc('imoveis','${d.id}')"><i class="ti ti-trash"></i></button>
+      </div>
+    </div>`).join('');
+}
+
+function renderDashImoveis(docs) {
+  const el = document.getElementById('dash-imoveis');
+  const emojis = {Casa:'🏠',Apartamento:'🏢','Sala Comercial':'🏪',Terreno:'🌿'};
+  el.innerHTML = docs.length ? docs.map(d=>`
+    <div class="row">
+      <span style="font-size:20px">${emojis[d.tipo]||'🏠'}</span>
+      <div style="flex:1"><div style="font-weight:600">${d.titulo||'—'}</div><div style="color:var(--mu);font-size:11px">${fmtR(d.preco)} · ${d.cidade||''}</div></div>
+      <span class="tag ${d.finalidade==='Aluguel'?'to':'tg'}">${d.finalidade||'Venda'}</span>
+    </div>`).join('') : '<div class="empty-state"><i class="ti ti-building-off"></i>Nenhum imóvel</div>';
+}
+
+function renderKanban(docs) {
+  const stages = ['Novo','Em Contato','Visita Agendada','Proposta','Fechado'];
+  const ids    = ['novo','cont','vis','prop','fech'];
+  stages.forEach((s,i) => {
+    const items = docs.filter(d=>d.status===s);
+    document.getElementById('k-'+ids[i]).textContent = items.length;
+    document.getElementById('k-'+ids[i]+'-body').innerHTML = items.length
+      ? items.map(d=>`<div class="lcard">
+          <div class="lc-n">${d.nome||'—'}</div>
+          <div class="lc-i">${d.interesse||''} · ${fmtR(d.orcamento)}</div>
+          <div class="lc-f"><span style="font-weight:700;font-size:11px">${d.fone||''}</span>
+          <button class="wa-btn" onclick="abrirWA('${d.fone||''}','${d.nome||''}')"><i class="ti ti-brand-whatsapp" style="font-size:10px"></i> Chat</button></div>
+          <button onclick="delDoc('leads','${d.id}')" style="background:none;border:none;cursor:pointer;color:var(--warn);font-size:11px;margin-top:4px"><i class="ti ti-trash"></i> Remover</button>
+        </div>`).join('')
+      : '<div class="empty-state" style="padding:12px"><i class="ti ti-inbox"></i>Vazio</div>';
+  });
+}
+
+function renderDashLeads(docs) {
+  const el = document.getElementById('dash-leads');
+  el.innerHTML = docs.length ? docs.map(d=>`
+    <div class="row">
+      <div class="av avb">${(d.nome||'?').charAt(0)}</div>
+      <div style="flex:1"><div style="font-weight:600">${d.nome||'—'}</div><div style="color:var(--mu);font-size:11px">${d.interesse||''} · ${fmtR(d.orcamento)}</div></div>
+      ${stTag(d.status||'Novo')}
+    </div>`).join('') : '<div class="empty-state"><i class="ti ti-users-off"></i>Nenhum lead</div>';
+}
+
+function renderWaLeads(docs) {
+  const el = document.getElementById('wa-leads');
+  el.innerHTML = docs.length ? docs.map(d=>`
+    <div class="row">
+      <div class="av avb">${(d.nome||'?').charAt(0)}</div>
+      <div style="flex:1"><div style="font-weight:600">${d.nome}</div><div style="color:var(--mu);font-size:11px">${d.fone||'—'}</div></div>
+      ${stTag(d.status||'Novo')}
+      <button class="wa-btn" onclick="abrirWA('${d.fone||''}','${d.nome||''}')"><i class="ti ti-brand-whatsapp" style="font-size:10px"></i></button>
+    </div>`).join('') : '<div class="empty-state"><i class="ti ti-users-off"></i>Nenhum lead</div>';
+}
+
+function renderContratos(docs) {
+  const el = document.getElementById('lista-contratos');
+  el.innerHTML = docs.length ? docs.map(d=>`
+    <div class="pc-wrap">
+      <div class="pc-h"><div><div style="font-weight:600">${d.locatario||'—'}</div><div style="font-size:10px;opacity:.8">${d.imovel||'—'}</div></div>${stTag(d.status||'Ativo')}</div>
+      <div class="pc-b" style="font-size:11px">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:8px">
+          <div><span style="color:var(--mu)">Aluguel:</span> <b>${fmtR(d.valor)}/mês</b></div>
+          <div><span style="color:var(--mu)">Vence dia:</span> ${d.vencDia||'—'}</div>
+          <div><span style="color:var(--mu)">Início:</span> ${fmtD(d.inicio)}</div>
+          <div><span style="color:var(--mu)">Término:</span> ${fmtD(d.fim)}</div>
+          <div><span style="color:var(--mu)">Proprietário:</span> ${d.proprietario||'—'}</div>
+          <div><span style="color:var(--mu)">Garantia:</span> ${d.garantia||'—'}</div>
+        </div>
+        <div style="display:flex;gap:5px;flex-wrap:wrap">
+          <button class="bs blo">Ver contrato</button>
+          <button class="bs bla">Simular reajuste</button>
+          <button class="bs bw" onclick="delDoc('contratos','${d.id}')"><i class="ti ti-trash"></i> Remover</button>
+        </div>
+      </div>
+    </div>`).join('') : '<div class="empty-state"><i class="ti ti-file-off"></i>Nenhum contrato no Firebase.</div>';
+
+  // atualizar dash locação
+  renderDashContratos(docs.slice(0,4));
+}
+
+function renderDashContratos(docs) {
+  const el = document.getElementById('ld-contratos-list');
+  el.innerHTML = docs.length ? docs.map(d=>`
+    <div class="row"><div style="flex:1"><div style="font-weight:600">${d.locatario||'—'}</div><div style="color:var(--mu);font-size:11px">${d.imovel||'—'} · ${fmtR(d.valor)}/mês</div></div>${stTag(d.status||'Ativo')}</div>`).join('')
+    : '<div class="empty-state"><i class="ti ti-file-off"></i>Nenhum contrato</div>';
+}
+
+function renderCobr(docs) {
+  const el = document.getElementById('lista-cobr');
+  el.innerHTML = docs.length ? docs.map(d=>`
+    <div class="row">
+      <span style="font-size:18px">💳</span>
+      <div style="flex:1"><div style="font-weight:600">${d.locatario||'—'}</div><div style="color:var(--mu);font-size:11px">${d.competencia||'—'} · ${fmtR(d.valor)} · ${d.forma||''} · vence ${fmtD(d.vencimento)}</div></div>
+      ${stTag(d.status||'Pendente')}
+      <button onclick="delDoc('cobr','${d.id}')" style="background:none;border:none;cursor:pointer;color:var(--warn);font-size:14px"><i class="ti ti-trash"></i></button>
+    </div>`).join('') : '<div class="empty-state"><i class="ti ti-receipt-off"></i>Nenhuma cobrança no Firebase.</div>';
+}
+
+function renderDashCobr(docs) {
+  const el = document.getElementById('ld-cobr-list');
+  el.innerHTML = docs.length ? docs.map(d=>`
+    <div class="row"><div style="flex:1"><div style="font-weight:600">${d.locatario||'—'}</div><div style="color:var(--mu);font-size:11px">${fmtR(d.valor)} · ${d.competencia||'—'}</div></div>${stTag(d.status||'Pendente')}</div>`).join('')
+    : '<div class="empty-state"><i class="ti ti-receipt-off"></i>Nenhuma cobrança</div>';
+}
+
+function renderLleads(docs) {
+  const el = document.getElementById('lista-lleads');
+  el.innerHTML = docs.length ? docs.map(d=>`
+    <div class="row">
+      <div class="av avb">${(d.nome||'?').charAt(0)}</div>
+      <div style="flex:1"><div style="font-weight:600">${d.nome||'—'}</div><div style="color:var(--mu);font-size:11px">${d.tipo||''} · orç. ${fmtR(d.orcamento)} · ${d.fone||''}</div></div>
+      ${stTag(d.status||'Novo')}
+      <button onclick="delDoc('leads_loc','${d.id}')" style="background:none;border:none;cursor:pointer;color:var(--warn);font-size:14px"><i class="ti ti-trash"></i></button>
+    </div>`).join('') : '<div class="empty-state"><i class="ti ti-users-off"></i>Nenhum lead de locação.</div>';
+}
+
+function renderManut(docs) {
+  const el = document.getElementById('lista-manut');
+  el.innerHTML = docs.length ? docs.map(d=>`
+    <div class="row">
+      <span style="font-size:18px">🔧</span>
+      <div style="flex:1"><div style="font-weight:600">${d.descricao||'—'}</div><div style="color:var(--mu);font-size:11px">${d.locatario||'—'} · ${d.imovel||''}</div></div>
+      ${stTag(d.prioridade==='Urgente'?'Urgente':d.status||'Aberto')}
+      <button onclick="delDoc('manutencao','${d.id}')" style="background:none;border:none;cursor:pointer;color:var(--warn);font-size:14px"><i class="ti ti-trash"></i></button>
+    </div>`).join('') : '<div class="empty-state"><i class="ti ti-tool"></i>Nenhum chamado aberto.</div>';
+}
+
+function renderSplitSelect(docs) {
+  const sel = document.getElementById('sp-ct');
+  sel.innerHTML = docs.length ? docs.map(d=>`<option value="${d.valor||0}">${d.locatario||'—'} — ${fmtR(d.valor)}</option>`).join('')
+    : '<option>Nenhum contrato cadastrado</option>';
+  sel.onchange = () => { document.getElementById('sp-val').value = sel.value; uSplit(); };
+}
+
+function renderIRProps(docs) {
+  const el = document.getElementById('ir-props');
+  el.innerHTML = docs.length ? docs.map(d=>`
+    <div class="row"><div style="flex:1"><div style="font-weight:600">${d.proprietario||'—'}</div><div style="color:var(--mu);font-size:11px">${d.imovel||'—'} · ${fmtR(d.valor)}/mês</div></div><span style="font-size:11px;color:var(--mu)">${fmtR((d.valor||0)*12)}/ano</span></div>`).join('')
+    : '<div class="empty-state"><i class="ti ti-users-off"></i>Nenhum contrato</div>';
+}
+
+function renderDimob(docs) {
+  document.getElementById('dimob-cnt').textContent = `${docs.length} contrato(s) de locação a informar`;
+  const el = document.getElementById('dimob-lista');
+  el.innerHTML = docs.length ? docs.map(d=>`
+    <div class="row"><div style="flex:1"><div style="font-weight:600">${d.locatario||'—'} → ${d.proprietario||'—'}</div><div style="color:var(--mu);font-size:11px">${d.imovel||'—'}</div></div><div style="text-align:right"><div style="font-weight:700">${fmtR((d.valor||0)*12)}</div><div style="font-size:10px;color:var(--mu)">anual</div></div><span class="tag tg" style="margin-left:6px">OK</span></div>`).join('')
+    : '<div class="empty-state"><i class="ti ti-file-off"></i>Nenhum contrato</div>';
+}
+
+function renderBannerSelect(docs) {
+  const sel = document.getElementById('ban-imovel');
+  if (docs.length) sel.innerHTML = docs.map(d=>`<option>${d.titulo||'Sem título'}</option>`).join('');
+}
+
+window.filtrarImoveis = () => {
+  const q = document.getElementById('srch-imoveis').value.toLowerCase();
+  const t = document.getElementById('flt-tipo').value;
+  const f = document.getElementById('flt-fin').value;
+  const filtered = allImoveis.filter(d =>
+    (!q || (d.titulo||'').toLowerCase().includes(q) || (d.cidade||'').toLowerCase().includes(q)) &&
+    (!t || d.tipo===t) && (!f || d.finalidade===f)
+  );
+  renderImoveis(filtered);
+};
+
+// ===== SALVAR =====
+window.salvarImovel = async () => {
+  const titulo = document.getElementById('im-titulo').value.trim();
+  if (!titulo) { showAlert('alert-imovel','Preencha o título.','err'); return; }
+  setBtnLoading('btn-pub', true);
+  try {
+    await addDoc(collection(db,'imoveis'), {
+      titulo, tipo: document.getElementB
