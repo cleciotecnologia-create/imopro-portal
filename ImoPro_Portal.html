@@ -2,6 +2,48 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
+<script type="module">
+import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js';
+import { getAuth, onAuthStateChanged, signOut } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js';
+const _app = initializeApp({
+  apiKey:"AIzaSyDEa19EQxhpxNNDJyxdlC48kfoP0BQtHso",
+  authDomain:"imopro-portal.firebaseapp.com",
+  projectId:"imopro-portal",
+  storageBucket:"imopro-portal.firebasestorage.app",
+  messagingSenderId:"251931175141",
+  appId:"1:251931175141:web:3825de4996e9eb565a8c0c"
+});
+const _auth = getAuth(_app);
+window._authApp = _app;
+window._auth = _auth;
+onAuthStateChanged(_auth, user => {
+  if (!user) {
+    window.location.href = 'login.html';
+    return;
+  }
+  // Preencher info do usuário no header
+  const nome = user.displayName || user.email.split('@')[0];
+  const el = document.getElementById('user-info-header');
+  if (el) {
+    const foto = user.photoURL
+      ? `<img src="${user.photoURL}" style="width:30px;height:30px;border-radius:50%;border:2px solid #e8a020;object-fit:cover">`
+      : `<div style="width:30px;height:30px;border-radius:50%;background:#e8a020;color:#fff;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700">${nome.charAt(0).toUpperCase()}</div>`;
+    el.innerHTML = `
+      <div style="display:flex;align-items:center;gap:8px">
+        ${foto}
+        <div>
+          <div style="font-size:12px;font-weight:600;color:#fff">${nome}</div>
+          <div style="font-size:10px;color:rgba(255,255,255,.6)">${user.email==='cleciotecnologia@gmail.com'?'👑 Admin':'👤 Usuário'}</div>
+        </div>
+        <button onclick="window._auth.signOut().then(()=>window.location.href='login.html')"
+          style="background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);color:#fff;border-radius:6px;padding:4px 10px;font-size:10px;cursor:pointer;margin-left:4px">
+          Sair
+        </button>
+      </div>`;
+  }
+});
+</script>
+
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>ImóPro — Portal Imobiliário</title>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/dist/tabler-icons.min.css">
@@ -190,7 +232,7 @@ textarea.fi{resize:vertical;min-height:65px}
 <!-- MAIN -->
 <div class="main">
 <div class="topbar">
-  <span class="tb-t" id="tb-title">Dashboard</span>
+  <span class="tb-t" id="tb-title">Dashboard</span><div id="user-info-header" style="margin-right:4px"></div>
   <div class="fb-st"><div class="fb-dot loading" id="fb-dot"></div><span id="fb-st-txt">Conectando Firebase...</span></div>
   <button class="tbtn pr" onclick="sp('publicar',document.querySelector('[onclick*=publicar]'))"><i class="ti ti-plus"></i> Novo Imóvel</button>
   <button class="tbtn ac" onclick="sp('contratos',document.querySelector('[onclick*=contratos]'))"><i class="ti ti-file-text"></i> Contratos</button>

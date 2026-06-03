@@ -3,68 +3,71 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ImóPro — Portal Imobiliário com Firebase</title>
+<title>ImóPro — Portal Imobiliário</title>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/dist/tabler-icons.min.css">
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'Segoe UI',system-ui,sans-serif;background:linear-gradient(135deg,#1a3a5c 0%,#0f4c75 50%,#1a3a5c 100%);min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px}
-.card{background:rgba(255,255,255,.05);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.1);border-radius:20px;padding:40px;max-width:560px;width:100%;text-align:center}
-.logo{font-size:56px;margin-bottom:16px}
-h1{font-size:32px;font-weight:800;color:#fff;margin-bottom:8px}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:linear-gradient(135deg,#1a3a5c 0%,#0f4c75 60%,#1a3a5c 100%);min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px}
+.card{background:rgba(255,255,255,.05);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.1);border-radius:20px;padding:40px;max-width:480px;width:100%;text-align:center}
+.logo{font-size:56px;margin-bottom:14px}
+h1{font-size:30px;font-weight:800;color:#fff;margin-bottom:6px}
 h1 span{color:#e8a020}
-.sub{color:rgba(255,255,255,.65);margin-bottom:10px;font-size:14px}
-.fb-ok{display:inline-flex;align-items:center;gap:6px;background:rgba(46,204,113,.15);border:1px solid rgba(46,204,113,.3);color:#2ecc71;border-radius:20px;padding:5px 14px;font-size:12px;font-weight:600;margin-bottom:28px}
-.fb-dot{width:8px;height:8px;border-radius:50%;background:#2ecc71;box-shadow:0 0 8px #2ecc71;animation:pulse 1.5s infinite}
-@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
-.links{display:flex;flex-direction:column;gap:10px;margin-bottom:28px}
-.link-btn{display:flex;align-items:center;gap:12px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);border-radius:12px;padding:14px 18px;color:#fff;text-decoration:none;transition:all .2s;text-align:left}
-.link-btn:hover{background:rgba(232,160,32,.2);border-color:#e8a020;transform:translateX(4px)}
-.link-btn .icon{width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
-.link-btn .info .title{font-weight:700;font-size:14px}
-.link-btn .info .desc{font-size:11px;color:rgba(255,255,255,.55);margin-top:2px}
-.link-btn .arrow{margin-left:auto;opacity:.5;font-size:18px}
-.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:20px}
-.stat{background:rgba(255,255,255,.06);border-radius:10px;padding:12px;border:1px solid rgba(255,255,255,.08)}
+.sub{color:rgba(255,255,255,.65);margin-bottom:28px;font-size:14px}
+.fb-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(46,204,113,.15);border:1px solid rgba(46,204,113,.3);color:#2ecc71;border-radius:20px;padding:5px 14px;font-size:12px;font-weight:700;margin-bottom:24px}
+.fdot{width:7px;height:7px;border-radius:50%;background:#2ecc71;box-shadow:0 0 7px #2ecc71;animation:p 1.5s infinite}
+@keyframes p{0%,100%{opacity:1}50%{opacity:.3}}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin-bottom:24px}
+.stat{background:rgba(255,255,255,.07);border-radius:10px;padding:12px;border:1px solid rgba(255,255,255,.08)}
 .stat-n{font-size:22px;font-weight:800;color:#e8a020}
 .stat-l{font-size:10px;color:rgba(255,255,255,.5);margin-top:2px}
-.footer{font-size:11px;color:rgba(255,255,255,.35)}
+.links{display:flex;flex-direction:column;gap:9px;margin-bottom:20px}
+.lbtn{display:flex;align-items:center;gap:12px;border-radius:12px;padding:13px 16px;color:#fff;text-decoration:none;transition:all .2s;text-align:left;border:1px solid rgba(255,255,255,.12)}
+.lbtn:hover{transform:translateX(4px)}
+.lbtn .ic{width:38px;height:38px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+.lbtn .tx .tt{font-weight:700;font-size:13px}
+.lbtn .tx .ds{font-size:11px;color:rgba(255,255,255,.5);margin-top:1px}
+.lbtn .ar{margin-left:auto;opacity:.5}
+.btn-login{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:14px;border-radius:12px;border:none;background:#e8a020;color:#fff;font-size:15px;font-weight:700;cursor:pointer;transition:all .2s;margin-bottom:10px}
+.btn-login:hover{background:#c8881a;transform:translateY(-1px);box-shadow:0 6px 20px rgba(232,160,32,.4)}
+.footer{font-size:11px;color:rgba(255,255,255,.3)}
 </style>
 </head>
 <body>
 <div class="card">
   <div class="logo">🏢</div>
   <h1>Imó<span>Pro</span></h1>
-  <p class="sub">Portal Imobiliário Completo</p>
-  <div class="fb-ok"><div class="fb-dot"></div> Firebase Firestore Conectado</div>
+  <p class="sub">Portal Imobiliário Completo com Firebase</p>
+  <div class="fb-badge"><div class="fdot"></div> Firebase conectado</div>
 
-  <div class="stats" id="stats">
+  <div class="stats">
     <div class="stat"><div class="stat-n" id="s-im">…</div><div class="stat-l">Imóveis</div></div>
     <div class="stat"><div class="stat-n" id="s-ld">…</div><div class="stat-l">Leads</div></div>
     <div class="stat"><div class="stat-n" id="s-ct">…</div><div class="stat-l">Contratos</div></div>
   </div>
 
+  <button class="btn-login" onclick="window.location.href='login.html'">
+    <i class="ti ti-login"></i> Acessar o Portal
+  </button>
+
   <div class="links">
-    <a href="ImoPro_Portal.html" class="link-btn">
-      <div class="icon" style="background:rgba(26,58,92,.8)">🏢</div>
-      <div class="info"><div class="title">Portal Imobiliário</div><div class="desc">CRM, Locação, DIMOB, IR, Marketing — completo</div></div>
-      <i class="ti ti-arrow-right arrow"></i>
+    <a href="login.html" class="lbtn" style="background:rgba(26,58,92,.6)">
+      <div class="ic" style="background:rgba(232,160,32,.2)">🔐</div>
+      <div class="tx"><div class="tt">Login com Google</div><div class="ds">Acesso seguro com sua conta Google</div></div>
+      <i class="ti ti-arrow-right ar"></i>
     </a>
-    <a href="ImoPro_Firebase_Diagnostico.html" class="link-btn">
-      <div class="icon" style="background:rgba(15,76,117,.8)">🔬</div>
-      <div class="info"><div class="title">Diagnóstico Firebase</div><div class="desc">Testar conexão, CRUD e status do banco</div></div>
-      <i class="ti ti-arrow-right arrow"></i>
-    </a>
-    <a href="ImoPro_Firebase_Test.html" class="link-btn">
-      <div class="icon" style="background:rgba(46,204,113,.2)">🧪</div>
-      <div class="info"><div class="title">Teste Rápido</div><div class="desc">Inserir e visualizar dados em tempo real</div></div>
-      <i class="ti ti-arrow-right arrow"></i>
+    <a href="ImoPro_Firebase_Diagnostico.html" class="lbtn" style="background:rgba(15,76,117,.5)">
+      <div class="ic" style="background:rgba(9,132,227,.2)">🔬</div>
+      <div class="tx"><div class="tt">Diagnóstico Firebase</div><div class="ds">Verificar status do banco de dados</div></div>
+      <i class="ti ti-arrow-right ar"></i>
     </a>
   </div>
+
   <div class="footer">ImóPro v1.0 · Firebase Firestore · Paulo Afonso, BA</div>
 </div>
 
 <script type="module">
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js';
+import { getAuth, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js';
 import { getFirestore, collection, onSnapshot } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
 const app = initializeApp({
   apiKey:"AIzaSyDEa19EQxhpxNNDJyxdlC48kfoP0BQtHso",
@@ -74,11 +77,13 @@ const app = initializeApp({
   messagingSenderId:"251931175141",
   appId:"1:251931175141:web:3825de4996e9eb565a8c0c"
 });
-const db = getFirestore(app);
+const auth = getAuth(app);
+const db   = getFirestore(app);
+// Se já logado, vai direto pro portal
+onAuthStateChanged(auth, u => { if(u) window.location.href='ImoPro_Portal.html'; });
+// Contadores
 [['imoveis','s-im'],['leads','s-ld'],['contratos','s-ct']].forEach(([col,id])=>{
-  onSnapshot(collection(db,col), snap => {
-    document.getElementById(id).textContent = snap.size;
-  });
+  onSnapshot(collection(db,col), snap => { document.getElementById(id).textContent=snap.size; });
 });
 </script>
 </body>
