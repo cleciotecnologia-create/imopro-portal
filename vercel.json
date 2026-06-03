@@ -1,32 +1,22 @@
 {
   "version": 2,
-  "builds": [
+  "github": {
+    "silent": true
+  },
+  "headers": [
     {
-      "src": "*.html",
-      "use": "@vercel/static"
+      "source": "/(.*)",
+      "headers": [
+        { "key": "Access-Control-Allow-Origin", "value": "*" },
+        { "key": "Access-Control-Allow-Methods", "value": "GET, POST, PUT, DELETE, OPTIONS" },
+        { "key": "Access-Control-Allow-Headers", "value": "X-Requested-With, Content-Type, Authorization" },
+        { "key": "Cache-Control", "value": "no-cache" }
+      ]
     }
   ],
-  "routes": [
-    {
-      "src": "/",
-      "dest": "/index.html"
-    },
-    {
-      "src": "/portal",
-      "dest": "/ImoPro_Portal.html"
-    },
-    {
-      "src": "/diagnostico",
-      "dest": "/ImoPro_Firebase_Diagnostico.html"
-    },
-    {
-      "headers": {
-        "Access-Control-Allow-Origin": "*",
-        "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
-        "X-Content-Type-Options": "nosniff"
-      },
-      "src": "/(.*)",
-      "dest": "/$1"
-    }
+  "rewrites": [
+    { "source": "/portal", "destination": "/ImoPro_Portal.html" },
+    { "source": "/diagnostico", "destination": "/ImoPro_Firebase_Diagnostico.html" },
+    { "source": "/teste", "destination": "/ImoPro_Firebase_Test.html" }
   ]
 }
