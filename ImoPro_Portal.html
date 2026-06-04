@@ -153,10 +153,9 @@ textarea.fi{resize:vertical;min-height:60px}
 .mini-b{height:4px;border-radius:2px;background:#eee;margin-top:2px}
 .mini-f{height:100%;border-radius:2px}
 </style>
-<!-- FIREBASE INIT — Firestore independente de Auth -->
+<!-- FIREBASE INIT — Apenas Firestore, sem Auth SDK -->
 <script type="module">
 import{initializeApp,getApps}from'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js';
-import{getAuth,onAuthStateChanged}from'https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js';
 
 const C={
   apiKey:"AIzaSyDEa19EQxhpxNNDJyxdlC48kfoP0BQtHso",
@@ -167,42 +166,14 @@ const C={
   appId:"1:251931175141:web:3825de4996e9eb565a8c0c"
 };
 
-// Inicializar app uma única vez
+// Inicializar Firebase App (apenas uma vez)
 const app = getApps().length ? getApps()[0] : initializeApp(C);
 window.__app = app;
 
-// Auth: tenta silenciosamente, sem bloquear Firestore
-try {
-  const auth = getAuth(app);
-  window.__auth = auth;
-  onAuthStateChanged(auth, u => {
-    const hdr = document.getElementById('uhdr');
-    if (!hdr) return;
-    if (u) {
-      window.__user = u;
-      const nome = u.displayName || u.email.split('@')[0];
-      const isAdmin = u.email === 'cleciotecnologia@gmail.com';
-      hdr.innerHTML = `
-        ${u.photoURL
-          ? `<img src="${u.photoURL}" style="width:28px;height:28px;border-radius:50%;border:2px solid var(--ac);object-fit:cover">`
-          : `<div class="user-hdr-av">${nome[0].toUpperCase()}</div>`}
-        <div style="line-height:1.2">
-          <div style="font-size:11px;font-weight:600;color:var(--tx)">${nome}</div>
-          <div style="font-size:9px;color:var(--mu)">${isAdmin?'👑 Admin':'Usuário'}</div>
-        </div>
-        <button onclick="window.__auth.signOut().then(()=>location.replace('login.html'))"
-          style="background:var(--bd);border:none;border-radius:5px;padding:3px 8px;font-size:10px;cursor:pointer;color:var(--tx);margin-left:2px">
-          Sair
-        </button>`;
-    } else {
-      // Não logado: mostra botão de login SEM bloquear o sistema
-      hdr.innerHTML = `<a href="login.html" style="background:var(--ac);color:#fff;border:none;border-radius:6px;padding:4px 12px;font-size:11px;cursor:pointer;font-weight:600;text-decoration:none"><i class="ti ti-login"></i> Login</a>`;
-    }
-  });
-} catch(e) {
-  console.warn('Auth não disponível:', e.message);
-  const hdr = document.getElementById('uhdr');
-  if (hdr) hdr.innerHTML = `<a href="login.html" style="background:var(--ac);color:#fff;border:none;border-radius:6px;padding:4px 12px;font-size:11px;cursor:pointer;font-weight:600;text-decoration:none">Login</a>`;
+// Mostrar header com link de login
+const hdr = document.getElementById('uhdr');
+if(hdr){
+  hdr.innerHTML=`<a href="login.html" style="background:var(--ac);color:#fff;border:none;border-radius:6px;padding:5px 12px;font-size:11px;cursor:pointer;font-weight:600;text-decoration:none;display:inline-flex;align-items:center;gap:4px"><i class="ti ti-user-circle"></i>Minha Conta</a>`;
 }
 </script>
 </head>
@@ -658,15 +629,15 @@ try {
 import{getApps,initializeApp}from'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js';
 import{getFirestore,collection,addDoc,getDocs,deleteDoc,doc,onSnapshot,serverTimestamp,query,orderBy,limit}from'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
 
-// Reusar app já inicializado (evita duplicação)
-const app = (typeof window.__app !== 'undefined') ? window.__app : (getApps()[0] || initializeApp({
+// Reusar app já inicializado
+const app = getApps().length ? getApps()[0] : initializeApp({
   apiKey:"AIzaSyDEa19EQxhpxNNDJyxdlC48kfoP0BQtHso",
   authDomain:"imopro-portal.firebaseapp.com",
   projectId:"imopro-portal",
   storageBucket:"imopro-portal.firebasestorage.app",
   messagingSenderId:"251931175141",
   appId:"1:251931175141:web:3825de4996e9eb565a8c0c"
-}));
+});
 const db = getFirestore(app);
 
 // ===== UTILS =====
