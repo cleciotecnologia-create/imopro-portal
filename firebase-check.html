@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>ImóPro — Firebase Check</title>
+<style>
+body{font-family:monospace;background:#0d1117;color:#e6edf3;padding:20px;font-size:13px}
+.ok{color:#2ecc71}.err{color:#e17055}.warn{color:#f39c12}.info{color:#58a6ff}
+pre{background:#161b22;border:1px solid #30363d;border-radius:8px;padding:14px;margin:10px 0;overflow-x:auto;line-height:1.8}
+h2{color:#e8a020;margin:16px 0 8px}
+.card{background:#161b22;border:1px solid #30363d;border-radius:10px;padding:16px;margin:10px 0}
+.btn{background:#e8a020;color:#fff;border:none;border-radius:6px;padding:8px 16px;cursor:pointer;font-size:12px;margin:5px}
+.btn:hover{opacity:.85}
+.btn-gr{background:#2ecc71}
+</style>
+</head>
+<body>
+<h1>🔥 ImóPro — Diagnóstico Firebase na Vercel</h1>
+
+<div class="card">
+  <h2>📍 Informações do Domínio</h2>
+  <pre id="domain-info">Carregando...</pre>
+</div>
+
+<div class="card">
+  <h2>🗄️ Teste Firestore (sem Auth)</h2>
+  <pre id="firestore-log">Aguardando...</pre>
+  <button class="btn" onclick="testarFirestore()">🔥 Testar Firestore Agora</button>
+  <button class="btn btn-gr" onclick="inserirDado()">✅ Inserir Dado de Teste</button>
+</div>
+
+<div class="card">
+  <h2>🔐 Status Auth</h2>
+  <pre id="auth-log">Aguardando...</pre>
+  <button class="btn" onclick="testarAuth()">🔐 Testar Auth</button>
+</div>
+
+<div class="card">
+  <h2>⚠️ Domínio para Autorizar no Firebase</h2>
+  <pre id="domain-to-add" class="warn">Detectando...</pre>
+  <p style="color:#f39c12;font-size:12px">Copie este domínio e adicione em:<br>
+  Firebase Console → Authentication → Settings → Domínios autorizados</p>
+  <a href="https://console.firebase.google.com/project/imopro-portal/authentication/settings" 
+     target="_blank" style="background:#0984e3;color:#fff;padding:7px 14px;border-radius:6px;text-decoration:none;font-size:12px">
+    Abrir Firebase Console
+  </a>
+</div>
+
+<script type="module">
+import { initializeApp, getApps } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js';
+import { getFirestore, collection, addDoc, getDocs, serverTimestamp, query, limit } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
+import { getAuth, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js';
+
+const C = {
+  apiKey: "AIzaSyDEa19EQxhpxNNDJyxdlC48kfoP0BQtHso",
+  authDomain: "imopro-portal.firebaseapp.com",
+  projectId: "imopro-portal",
+  storageBucket: "imopro-portal.firebasestorage.app",
+  messagingSenderId: "251931175141",
+  appId: "1:251931175141:web:3825de4996e9eb565a8c0c"
+};
+
+function log(id, msg, cls='info') {
+  const e = document.getElementById(id);
+  if (e) e.innerHTML += `<span class="${cls}">${msg}\n</span>`;
+}
+function setEl(id, msg, cls='') {
+  const e = document.getElementById(id);
+  if (e) { e.innerHTML = `<span class="${cls}">${msg}</span>`; }
+}
+
+// Info do domínio
+const host = window.location.hostname;
+const href = window.location.href;
+setEl('domain-info', `Hostname: ${host}\nURL: ${href}\nProtocol: ${window.location.protocol}`);
+setEl('domain-to-add', host, 'warn');
+
+// Inicializar Firebase
+let app, db, auth;
+try {
+  app = getApps().length ? getApps()[0] : initializeApp(C);
+  db = getFirestore(app);
+  log('firestore-log', '✅ Firebase App inicializado', 'ok');
+  log('firestore-log', `✅ Projeto: imopro-portal`, 'ok');
+} catch(e) {
+  log('firestore-log', `❌ Erro init: ${e.message}`, 'err');
+}
+
+// Testar Firestore automaticamente
+window.testarFirestore = async () => {
+  const el = document.getElementById('firestore-log');
+  el.innerHTML = '';
+  log('firestore-log', '🔄 Tentando ler coleção "imoveis"...', 'info');
+  try {
+    const snap = await getDocs(query(collection(db, 'imoveis'), limit(5)));
+    log('firestore-log', `✅ FIRESTORE OK! ${snap.size} documento(s) em "imoveis"`, 'ok');
+    snap.docs.forEach(d => {
+      const data = d.data();
+      log('firestore-log', `  → ${d.id}: ${data.titulo || data.nome || JSON.stringify(data).slice(0,50)}`, 'ok');
+    });
+    if (snap.size === 0) log('firestore-log', '  (coleção vazia — tudo OK!)', 'warn');
+  } catch(e) {
+    log('firestore-log', `❌ ERRO Firestore: ${e.message}`, 'err');
+    log('firestore-log', `❌ Code: ${e.code}`, 'err');
+    if (e.code === 'permission-denied') {
+      log('firestore-log', '⚠️ SOLUÇÃO: Configure as Regras do Firestore!', 'warn');
+      log('firestore-log', 'Firebase Console → Firestore → Rules → allow read, write: if true;', 'warn');
+    }
+  }
+};
+
+window.inserirDado = async () => {
+  log('firestore-log', '✍️ Inserindo documento de teste...', 'info');
+  try {
+    const ref = await addDoc(collection(db, '_vercel_test'), {
+      host: window.location.hostname,
+      ts: serverTimestamp(),
+      ok: true
+    });
+    log('firestore-log', `✅ ESCRITA OK! ID: ${ref.id}`, 'ok');
+    log('firestore-log', '🔥 Firestore funcionando perfeitamente na Vercel!', 'ok');
+  } catch(e) {
+    log('firestore-log', `❌ Erro escrita: ${e.message}`, 'err');
+  }
+};
+
+window.testarAuth = () => {
+  const el = document.getElementById('auth-log');
+  el.innerHTML = '';
+  try {
+    auth = getAuth(app);
+    log('auth-log', '🔄 Verificando estado de autenticação...', 'info');
+    onAuthStateChanged(auth, u => {
+      if (u) {
+        log('auth-log', `✅ AUTH OK! Logado como: ${u.email}`, 'ok');
+        log('auth-log', `✅ Nome: ${u.displayName || 'não definido'}`, 'ok');
+        log('auth-log', `✅ UID: ${u.uid}`, 'ok');
+      } else {
+        log('auth-log', `⚠️ Não logado`, 'warn');
+        log('auth-log', `ℹ️ Para Auth funcionar, adicione "${window.location.hostname}" nos domínios autorizados`, 'warn');
+        log('auth-log', 'ℹ️ Mas o FIRESTORE funciona sem Auth!', 'info');
+      }
+    });
+  } catch(e) {
+    log('auth-log', `❌ Erro Auth: ${e.message}`, 'err');
+    log('auth-log', 'ℹ️ Isso não afeta o Firestore!', 'info');
+  }
+};
+
+// Testar automaticamente ao carregar
+setTimeout(testarFirestore, 500);
+setTimeout(testarAuth, 1000);
+</script>
+</body>
+</html>

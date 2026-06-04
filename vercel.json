@@ -7,13 +7,16 @@
         { "key": "Access-Control-Allow-Origin", "value": "*" },
         { "key": "Access-Control-Allow-Methods", "value": "GET, POST, OPTIONS" },
         { "key": "Access-Control-Allow-Headers", "value": "Content-Type, Authorization" },
-        { "key": "Cache-Control", "value": "no-cache, no-store, must-revalidate" }
+        { "key": "Cache-Control", "value": "no-cache, no-store, must-revalidate" },
+        { "key": "Pragma", "value": "no-cache" },
+        { "key": "Expires", "value": "0" }
       ]
     }
   ],
   "rewrites": [
-    { "source": "/login",       "destination": "/login.html" },
-    { "source": "/portal",      "destination": "/ImoPro_Portal.html" },
-    { "source": "/diagnostico", "destination": "/ImoPro_Firebase_Diagnostico.html" }
+    { "source": "/login",      "destination": "/login.html" },
+    { "source": "/portal",     "destination": "/ImoPro_Portal.html" },
+    { "source": "/check",      "destination": "/firebase-check.html" },
+    { "source": "/diagnostico","destination": "/ImoPro_Firebase_Diagnostico.html" }
   ]
 }
