@@ -154,27 +154,12 @@ textarea.fi{resize:vertical;min-height:60px}
 .mini-f{height:100%;border-radius:2px}
 </style>
 <!-- FIREBASE INIT — Apenas Firestore, sem Auth SDK -->
-<script type="module">
-import{initializeApp,getApps}from'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js';
-
-const C={
-  apiKey:"AIzaSyDEa19EQxhpxNNDJyxdlC48kfoP0BQtHso",
-  authDomain:"imopro-portal.firebaseapp.com",
-  projectId:"imopro-portal",
-  storageBucket:"imopro-portal.firebasestorage.app",
-  messagingSenderId:"251931175141",
-  appId:"1:251931175141:web:3825de4996e9eb565a8c0c"
-};
-
-// Inicializar Firebase App (apenas uma vez)
-const app = getApps().length ? getApps()[0] : initializeApp(C);
-window.__app = app;
-
-// Mostrar header com link de login
-const hdr = document.getElementById('uhdr');
-if(hdr){
-  hdr.innerHTML=`<a href="login.html" style="background:var(--ac);color:#fff;border:none;border-radius:6px;padding:5px 12px;font-size:11px;cursor:pointer;font-weight:600;text-decoration:none;display:inline-flex;align-items:center;gap:4px"><i class="ti ti-user-circle"></i>Minha Conta</a>`;
-}
+<script>
+// Header login link — sem Firebase aqui para evitar conflito de módulo
+document.addEventListener('DOMContentLoaded',()=>{
+  const hdr=document.getElementById('uhdr');
+  if(hdr) hdr.innerHTML=`<a href="login.html" style="background:var(--ac);color:#fff;border:none;border-radius:6px;padding:5px 12px;font-size:11px;cursor:pointer;font-weight:600;text-decoration:none;display:inline-flex;align-items:center;gap:4px"><i class="ti ti-user-circle"></i>Minha Conta</a>`;
+});
 </script>
 </head>
 <body>
@@ -626,19 +611,22 @@ if(hdr){
 </div><!-- /shell -->
 
 <script type="module">
-import{getApps,initializeApp}from'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js';
-import{getFirestore,collection,addDoc,getDocs,deleteDoc,doc,onSnapshot,serverTimestamp,query,orderBy,limit}from'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
+import{initializeApp,getApps}from'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js';
+import{getFirestore,collection,addDoc,getDocs,deleteDoc,doc,onSnapshot,serverTimestamp,query,orderBy,limit,where}from'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
 
-// Reusar app já inicializado
-const app = getApps().length ? getApps()[0] : initializeApp({
+// Config Firebase
+const _FC = {
   apiKey:"AIzaSyDEa19EQxhpxNNDJyxdlC48kfoP0BQtHso",
   authDomain:"imopro-portal.firebaseapp.com",
   projectId:"imopro-portal",
   storageBucket:"imopro-portal.firebasestorage.app",
   messagingSenderId:"251931175141",
   appId:"1:251931175141:web:3825de4996e9eb565a8c0c"
-});
-const db = getFirestore(app);
+};
+// Garantir única instância
+const app = getApps().length ? getApps()[0] : initializeApp(_FC);
+const db  = getFirestore(app);
+console.log("✅ Firebase inicializado — projeto:", app.options.projectId);
 
 // ===== UTILS =====
 const fR=v=>'R$'+Number(v||0).toLocaleString('pt-BR');
@@ -647,7 +635,7 @@ const stC=s=>{const m={Ativo:'tg',Novo:'tg','Em dia':'tg',Pago:'tg',Fechado:'tg'
 const emoji={Casa:'🏠',Apartamento:'🏢','Sala Comercial':'🏪',Terreno:'🌿',Galpão:'🏭'};
 const emBg={Casa:'#e8f0fb',Apartamento:'#fef3e2','Sala Comercial':'#f3e8fb',Terreno:'#e8fbe8'};
 
-function fbOK(){document.getElementById('fbd').className='fb-dot ok';document.getElementById('fbst').textContent='Firebase OK';}
+function fbOK(){document.getElementById('fbd').className='fb-dot ok';document.getElementById('fbst').textContent='Firebase OK';console.log('✅ Firebase Firestore conectado!');}
 function al(id,msg,ok=true){const e=document.getElementById(id);if(!e)return;e.innerHTML=`<div class="alert ${ok?'al-ok':'al-err'}"><i class="ti ti-${ok?'circle-check':'circle-x'}"></i>${msg}</div>`;setTimeout(()=>e.innerHTML='',4000);}
 function setBtn(id,loading,txt){const b=document.getElementById(id);if(!b)return;b.disabled=loading;b.innerHTML=loading?'<span class="spinner"></span> Salvando...':`<i class="ti ti-device-floppy"></i>${txt}`;}
 
@@ -656,6 +644,7 @@ let allIM=[],allLD=[],allCT=[],allCB=[],allLL=[],allMN=[];
 
 // ===== LISTENERS OTIMIZADOS (limit 50 max) =====
 function initListeners(){
+  console.log("🔄 Iniciando listeners Firebase...");
   // Imóveis
   onSnapshot(query(collection(db,'imoveis'),orderBy('criadoEm','desc'),limit(50)),s=>{
     allIM=s.docs.map(d=>({id:d.id,...d.data()}));
@@ -906,7 +895,16 @@ window.sp=(id,el)=>{
 // ===== INIT =====
 document.getElementById('ir-cp').value=new Date().toISOString().slice(0,7);
 cIR();uSpl();
-initListeners();
+
+// Iniciar com tratamento de erro
+try {
+  initListeners();
+  console.log("✅ Listeners Firebase iniciados!");
+} catch(err) {
+  console.error("❌ Erro ao iniciar listeners:", err);
+  document.getElementById('fbd').className='fb-dot';
+  document.getElementById('fbst').textContent='Erro Firebase: '+err.message;
+}
 </script>
 </body>
 </html>
